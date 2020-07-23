@@ -1,0 +1,14 @@
+[Unit]
+Description=Bookshelf python app
+After=network.target
+
+[Service]
+Type=simple
+User=pythonapp
+WorkingDirectory={{ python_app_folder }}
+Environment="VIRTUAL_ENV={{ venv_path }}" "PATH=$VIRTUAL_ENV/bin:$PATH" "HOME=/home/pythonapp" "USER=pythonapp"
+ExecStart={{ venv_path }}/bin/honcho start -f {{ python_app_folder }}/procfile worker bookshelf
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

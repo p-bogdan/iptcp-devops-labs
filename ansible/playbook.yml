@@ -1,0 +1,112 @@
+---
+- name: Provision bookshelf application
+  hosts: 127.0.0.1
+  
+  vars:
+    destin_folder: /etc/ansible
+    python_app_folder: /opt/app/7-gce
+    venv_path: /opt/app/7-gce/env
+    venv_req_path: /opt/app/7-gce/requirements.txt
+    systemd_service_dir: /lib/systemd/system
+    
+  vars_files:
+    - tf_ansible_vars.yml
+    
+  tasks:
+  - name: Copy default config ansible files and leave only needed settings
+    copy: src={{ item }} dest={{ destin_folder }}
+    with_fileglob:
+      - ansible.cfg
+      - hosts
+
+  - name: Download Stackdriver logging agent 
+    get_url: url=https://dl.google.com/cloudagents/install-logging-agent.sh dest=/tmp/install-logging-agent.sh
+
+  - name: Run downloaded script
+    script: /tmp/install-logging-agent.sh
+    run_once: true
+    #args:
+    #  creates: /tmp/install-logging-agent.sh
+        #run_once: true
+
+  - name: Create user pythonapp
+    user:
+      name: pythonapp
+      shell: /home/pythonapp
+
+  - name: Install or update needed software
+    package: 
+      name:
+        - virtualenv
+        - python3-virtualenv
+        - python3-pip
+        - libffi-dev
+        - libssl-dev
+       
+      state: latest
+      update_cache: yes
+    when: ansible_os_family == "Debian"
+
+  - name: install the package, force upgrade
+    pip: 
+      name:
+        - pip
+        - virtualenv
+      executable: pip3
+      state: latest
+
+  - name: Download Cloud sql executable
+    get_url:
+      url: https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64
+      dest: /usr/local/bin/cloud_sql_proxy
+      mode: 0755  
+
+  #- name: Connect cloud sql proxy to the instance
+  #  script: /tmp/cloud_sql_proxy -instances={{ connection_name }}:=tcp:3306
+  #  shell: /tmp/cloud_sql_proxy -instances={{ connection_name }}:=tcp:3306 &
+  - name: Install cloud sql proxy systemd unit file
+    template: src=config_cloud_sql.j2 dest={{ systemd_service_dir }}/cloud-sql-proxy.service
+
+  - name: start cloud sql proxy service
+    systemd: state=started name=cloud-sql-proxy daemon_reload=yes
+
+  - name: Clone repo with Python app
+    git:
+      repo: 'https://github.com/ciscoios/getting-started-python.git'
+      dest: "/opt/app"
+      force: yes #if repo exists rewrite files to avoid broken playbook
+      version: steps
+
+  - name: Generate config.py file via jinja and place to folder with application
+    template: src=config.j2 dest={{ python_app_folder }}/config.py 
+    notify: #Reload systemd service once config.py changes
+      - Reload systemd
+
+  - name: Create virtualenv and install dependencies
+    pip:
+      requirements: "{{ venv_req_path }}"
+      virtualenv: "{{ venv_path }}" # <--- path to user's home folder*
+      virtualenv_command: virtualenv
+      virtualenv_site_packages: no # <---- added this parameter to exclude site packages
+      virtualenv_python: python3
+
+  - name: Initialize application tables in database
+    command: "{{ venv_path }}/bin/python3 /opt/app/7-gce/bookshelf/model_cloudsql.py"
+    run_once: true
+
+  - name: Set ownership to pythonapp folder
+    file: dest=/opt/app owner=pythonapp group=pythonapp mode=u=rwX,g=rX,o=rX recurse=yes
+  
+  #- name: Copy pythonapp to supervisor folder
+  #  copy: src=python-app.conf dest=/etc/supervisor/conf.d/
+
+  - name: Generate python app systemd jinja config and place it to systemd service folder
+    template: src=pythonapp.j2 dest={{ systemd_service_dir }}/pythonapp.service
+  
+  handlers:
+    - name: Reload systemd
+      service: 
+        name: pythonapp
+        state: reloaded 
+
+    
