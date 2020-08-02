@@ -9,7 +9,7 @@ variable "region" {
 }
 
 variable "project" {
-  default = "gcp-training-iptcp"
+  default = "lab-project"
 }
 
 /*     variable "metadata_startup_script" {
