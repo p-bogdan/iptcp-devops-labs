@@ -2,8 +2,8 @@
 provider "google" {
   version = "~> 3.23"
   # project = "gcp-training-iptcp"
-  project = "gcp-training-iptcp"
-  region  = "var.region"
+  project = var.project
+  region  = var.region
 }
 
 provider "google-beta" {

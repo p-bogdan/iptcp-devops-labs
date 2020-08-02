@@ -1,5 +1,0 @@
-"cloud_sql_password": "056f5358"
-"connection_name": "gcp-training-iptcp:europe-west1:bookshelf-instance-056f5358"
-"data_backend": "cloudsql"
-"project_id": "gcp-training-iptcp"
-"storage_bucket": "bookshelf-app-data-056f5358"
