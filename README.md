@@ -1,5 +1,5 @@
-# gcp-terraform-ansible
-This lab was intended to become more familiar working with gcp, terraform, ansible.
+# iptcp-devops-labs
+First lab was intended to become more familiar working with gcp, terraform, ansible.
 Lab can be expanded by adding kubernetes, jenkins pipeline.
 
 Future possible improvements
