@@ -3,9 +3,10 @@ cd /tmp
 #Install ansible and git
 apt-get update && apt-get install -yq ansible=2.9.6* git
 #Clone repo from Google Cloud Source Repositories and checkout to a specific branch
-repo_name=bookshelf-p.bogdan
+repo_name=iptcp-devops-labs
 
-gcloud source repos clone $repo_name && cd $repo_name 
+#gcloud source repos clone $repo_name && cd $repo_name 
+git clone https://github.com/ciscoios/iptcp-devops-labs && cd $repo_name
 #&& git checkout -b gcp-lab
 
 

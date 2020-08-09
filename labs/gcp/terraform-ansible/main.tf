@@ -42,8 +42,9 @@ module "bucket" {
   #project = var.project
   #  region           = module.compute_network.region
   #random_id         =  module.sql.random_id 
-  random_id_hex = module.sql.random_id_hex
+  random_id_hex      = module.sql.random_id_hex
   #role_entity        = var.role_entity
+  entity             = "allUsers"
 }
 ###############################################################################
 
