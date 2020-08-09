@@ -1,1 +1,1 @@
-ansible/*.yml
+ansible/tf_ansible_vars.yml
