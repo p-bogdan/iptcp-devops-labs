@@ -9,7 +9,6 @@ repo_name=iptcp-devops-labs
 git clone https://github.com/ciscoios/iptcp-devops-labs && cd $repo_name
 #&& git checkout -b gcp-lab
 
-
 #Pull last changes
 #git pull origin gcp-lab
 
@@ -17,7 +16,7 @@ git clone https://github.com/ciscoios/iptcp-devops-labs && cd $repo_name
 #export secret_version=`gcloud secrets versions list tf-ansible-vars --format='value(name)' --filter=state=ENABLED`
 #gcloud secrets versions access $secret_version --secret="tf-ansible-vars" > /tmp/bookshelf-p.bogdan/ansible/tf_ansible_vars.yml
 
-gcloud secrets versions access `gcloud secrets versions list tf-ansible-vars --format='value(name)' --filter=state=ENABLED` --secret="tf-ansible-vars" > /tmp/bookshelf-p.bogdan/ansible/tf_ansible_vars.yml
+gcloud secrets versions access `gcloud secrets versions list tf-ansible-vars --format='value(name)' --filter=state=ENABLED` --secret="tf-ansible-vars" > /tmp/iptcp-devops-labs/labs/gcp/terraform-ansible/ansible/tf_ansible_vars.yml
 
 #Run ansible playbook
-ansible-playbook ansible/playbook.yml
+ansible-playbook labs/gcp/terraform-ansible/ansible/playbook.yml
