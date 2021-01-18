@@ -24,31 +24,15 @@ variable "ipv4_range_backends" {
   default = "10.132.1.0/24"
 }
 
- variable "entity" {
-# #  default = "terraform-sa@lab-project-282605.iam.gserviceaccount.com"
- default = "allUsers"
- }
-
- variable "email" {
-   default = "terraform-sa@lab-project-282605.iam.gserviceaccount.com"
- }
-
-#variable "role_entity" {
-#  default = "OWNER:terraform-sa@lab-project-282605.iam.gserviceaccount.com"
-#}
-
-variable "startup-script" {
-  description = "User startup script to run when instances spin up"
-  #  default     = "startup-script_project.sh"
-  #  default = "startup-script_project.sh"
-  # type    = string
-  #  default = "" 
+variable "entity" {
+  # #  default = "terraform-sa@lab-project-282605.iam.gserviceaccount.com"
+  default = "allUsers"
 }
-/*    variable "tf_ansible_vars_file" {
-  description = "Generating ansible variables in ansible/file_name"
-  #  default = ""
-}   */
 
-#variable "network_name" {
-#default = module.compute_network.network_name
-#}
+variable "email" {
+  default = "terraform-sa@lab-project-282605.iam.gserviceaccount.com"
+}
+
+# variable "startup-script" {
+#   description = "User startup script to run when instances spin up"
+# }
