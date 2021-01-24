@@ -3,7 +3,7 @@
 *.tfstate
 *.tfstate.*
 # .tfstate files
-
+*.hcl
 # Crash log files
 crash.log
 

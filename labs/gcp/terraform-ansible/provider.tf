@@ -1,6 +1,6 @@
 
 provider "google" {
-  version = "~> 3.23"
+  version = "~> 3.52.0"
   # project = "gcp-training-iptcp"
   project = var.project
   region  = var.region

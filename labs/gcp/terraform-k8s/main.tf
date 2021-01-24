@@ -1,27 +1,14 @@
 module "compute_network" {
-  source  = "./modules/vpc"
-  project = var.project
-  region  = var.region
-}
-
-# module "compute_network" {
-#   source = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/k8s"
-#   project = var.project
-#   region  = var.region
-#  random_id = module.sql.random_id
-#  target-http-proxy_id = module.internal_http_load_balancer.target-http-proxy_id
-# }
+   source = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/vpc"
+   project             = "lab-project-282605"
+   region              = "europe-west1"
+   network_name        = "k8s-network"
+   ipv4_range_backends = "10.132.5.0/24"
+ }
 
 module "gke" {
   source  = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/gke"
-  project = var.project
-  #  region = var.region
-  zone = var.zone
+  project = "lab-project-282605"
+  zone = "europe-west1-b"
 }
-#module "helm" {
-#  source = "./modules/helm" 
-#}
-#  zone    = var.zone
-#  cluster_version = "1.17.14-gke.1600"
-#}
 
