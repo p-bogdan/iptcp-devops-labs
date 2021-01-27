@@ -1,0 +1,6 @@
+This is intented to test packer+aws+terraform setup.
+
+First we need to build packer AMI image in aws
+1. packer build packer.pkr.hcl.
+2. Configure terraform aws provider setup to configure EC2 instance based on packer image.
+Use ami that packer was created.
