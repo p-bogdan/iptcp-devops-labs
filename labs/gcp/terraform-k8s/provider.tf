@@ -5,7 +5,7 @@ provider "google" {
 
 
 provider "kubernetes" {
-  load_config_file = var.load_config_file
+  load_config_file = false
   project = "lab-project-282605"
   host  = google_container_cluster.primary.endpoint
   token = data.google_client_config.default.access_token
