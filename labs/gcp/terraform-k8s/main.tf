@@ -15,20 +15,13 @@ module "gke" {
   zone = "europe-west1-b"
   cluster_name = "k8s-lab"
   node_count = "2"
-}
-
-data "template_file" "kubeconfig" {
-  template = file("${path.module}/templates/kubeconfig-template.yaml.tpl")
-
-  vars = {
-    context                = data.google_container_cluster.gke_cluster.name
-    cluster_ca_certificate = data.google_container_cluster.gke_cluster.master_auth
-    endpoint               = data.google_container_cluster.gke_cluster.endpoint
-    token                  = data.google_client_config.default.access_token
-  }
-}
-
-resource "local_file" "kubeconfig" {
-  content  = module.gke_auth.kubeconfig_raw
-  filename = "${path.module}/.kube/config"
+  machine_type = "n1-standard-1"
+  disk_size_gb = 10
+  auto_repair = true
+  auto_upgrade = true
+  cluster_version = "1.18.12-gke.1210"
+  issue_client_certificate = false
+  preemptible = false
+  remove_default_node_pool = true
+  env = "staging"
 }

@@ -5,22 +5,25 @@ provider "google" {
 
 
 provider "kubernetes" {
-  load_config_file = false
-  project = "lab-project-282605"
-  host  = google_container_cluster.primary.endpoint
-  token = data.google_client_config.default.access_token
+  #load_config_file = false
+
+  host  = "https://${module.gke.k8s-cluster-endpoint}"
+  token = module.gke.access_token
   cluster_ca_certificate = base64decode(
-    google_container_cluster.kubernetes_cluster.master_auth.0.cluster_ca_certificate
+    module.gke.cluster_ca_cert,
   )
 }
 
+#To get access to Kubernetes cluster inside GCP run this command
+#gcloud container clusters get-credentials cluster_name --zone cluster_zone --project project_id
+
 provider "helm" {
   kubernetes {
-    host = google_container_cluster.kubernetes_cluster.endpoint
-    token = data.google_client_config.default.access_token
-
+    host  = "https://${module.gke.k8s-cluster-endpoint}"
+    token = var.access_token
+    config_path = module.gke.kubeconfig
     cluster_ca_certificate = base64decode(
-    google_container_cluster.primary.master_auth.0.cluster_ca_certificate
+    module.gke.cluster_ca_cert
   )
   }
 }
@@ -29,7 +32,7 @@ terraform {
   required_providers {
     mycloud = {
       source  = "hashicorp/google"
-      version = "~> 3.53.0"
+      version = "~> 3.59.0"
     }
   }
 }
