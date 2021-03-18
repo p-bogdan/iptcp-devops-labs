@@ -30,13 +30,17 @@ module "gke" {
 resource "null_resource" "token" {
   provisioner "local-exec" {
     command = "kubectl get secret $(kubectl get sa jenkins -n default -o jsonpath={.secrets[0].name}) -n default -o jsonpath={.data.token} | base64 --decode > jenkins.token"
-    when = create
-  }
+ }
+  triggers = {
+    "after" = kubernetes_role_binding.example.id
+ }
 }
 
 resource "null_resource" "certificate" {
   provisioner "local-exec" {
     command = "kubectl get secret $(kubectl get sa jenkins -n default -o jsonpath={.secrets[0].name}) -n default -o jsonpath={.data.'ca\\.crt'} | base64 --decode > jenkins.ca.crt"
-    when = create
-  }
+ }
+  triggers = {
+    "after" = null_resource.token.id
+ }
 }
