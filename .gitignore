@@ -33,3 +33,7 @@ terraform.rc
 
 #Ignore git system folders
 .git
+
+#Jenkins auth generated credentials for Kubernetes
+*.crt
+*.token
