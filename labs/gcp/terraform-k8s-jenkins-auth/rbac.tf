@@ -5,7 +5,7 @@ resource "kubernetes_service_account" "example" {
 }
 resource "kubernetes_secret" "example" {
   metadata {
-    name = "jenkins"  
+    name = "jenkins"
     annotations = {
       "kubernetes.io/service-account.name" = kubernetes_service_account.example.metadata.0.name
     }
@@ -24,19 +24,19 @@ resource "kubernetes_role" "example" {
   }
 
   rule {
-    api_groups     = [""]
-    resources      = ["pods"]
-    verbs          = ["create","delete","get","list","patch","update","watch"]
+    api_groups = [""]
+    resources  = ["pods"]
+    verbs      = ["create", "delete", "get", "list", "patch", "update", "watch"]
   }
   rule {
     api_groups = [""]
     resources  = ["pods/exec"]
-    verbs      = ["create","delete","get","list","patch","update","watch"]
+    verbs      = ["create", "delete", "get", "list", "patch", "update", "watch"]
   }
   rule {
     api_groups = [""]
     resources  = ["pods/log"]
-    verbs      = ["get","list","watch"]
+    verbs      = ["get", "list", "watch"]
   }
   rule {
     api_groups = [""]
