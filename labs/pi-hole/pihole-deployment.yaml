@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.22.0 (955b78124)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: pihole
+  name: pihole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: pihole
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.22.0 (955b78124)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: pihole
+    spec:
+      containers:
+        - env:
+            - name: TZ
+              value: America/Chicago
+          image: pihole/pihole:latest
+          name: pihole
+          ports:
+            - containerPort: 53
+            - containerPort: 53
+              protocol: UDP
+            - containerPort: 67
+              protocol: UDP
+            - containerPort: 80
+            - containerPort: 443
+          resources: {}
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - mountPath: /etc/pihole/
+              name: pihole-claim0
+            - mountPath: /etc/dnsmasq.d/
+              name: pihole-claim1
+      restartPolicy: Always
+      volumes:
+        - name: pihole-claim0
+          persistentVolumeClaim:
+            claimName: pihole-claim0
+        - name: pihole-claim1
+          persistentVolumeClaim:
+            claimName: pihole-claim1
+status: {}
