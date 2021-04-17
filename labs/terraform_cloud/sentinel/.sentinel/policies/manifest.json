@@ -1,0 +1,10 @@
+{
+	"records": [
+		{
+			"key": "check-terraform-version",
+			"source": "./check-terraform-version.sentinel",
+			"sourceSum": "",
+			"dest": "/home/iptcp/devops/iptcp-devops-labs/labs/terraform_cloud/sentinel/check-terraform-version.sentinel"
+		}
+	]
+}
