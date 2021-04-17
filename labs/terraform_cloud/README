@@ -9,6 +9,8 @@ or
 create it by running "terraform login" command
 Once created saved it and paste value into token parameter
 
+Also run export TF_CLI_CONFIG_FILE=~username/.terraform.d/.terraformrc
+
 2. Create GOOGLE_APPLICATION_CREDENTIALS variable in our terraform cloud workspace
 (just paste json output in value section) 
 
