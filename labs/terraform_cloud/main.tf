@@ -8,14 +8,6 @@ module "compute_network" {
   fw_ports            = ["80", "8080", "443", "22"]
 }
 
-module "bucket" {
-  source             = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/bucket"
-  location           = "US"
-  entity             = "allUsers"
-  access_bucket_role = "READER"
-  bucket_name        = "simple-pipeline-artifact2"
-}
-
 module "gke" {
   source                   = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/gke"
   project                  = "lab-project-282605"
@@ -33,22 +25,3 @@ module "gke" {
   env                      = "staging"
 }
 
-#Get cluster ip - kubectl config view -o jsonpath={.clusters[0].cluster.server} or through output.tf
-
-resource "null_resource" "token" {
-  provisioner "local-exec" {
-    command = "kubectl get secret $(kubectl get sa jenkins -n default -o jsonpath={.secrets[0].name}) -n default -o jsonpath={.data.token} | base64 --decode > jenkins.token"
-  }
-  triggers = {
-    "after" = kubernetes_role_binding.example.id
-  }
-}
-
-resource "null_resource" "certificate" {
-  provisioner "local-exec" {
-    command = "kubectl get secret $(kubectl get sa jenkins -n default -o jsonpath={.secrets[0].name}) -n default -o jsonpath={.data.'ca\\.crt'} | base64 --decode > jenkins.ca.crt"
-  }
-  triggers = {
-    "after" = null_resource.token.id
-  }
-}
