@@ -1,0 +1,15 @@
+To make this terraform code work we should do the following:
+1. add .terraformrc and placed it in ~username/.terraform.d/.terraformrc
+with the content 
+credentials "app.terraform.io" {
+  token = ""
+}
+You can create token manually in terraform cloud -> User Settings->Tokens
+or
+create it by running "terraform login" command
+Once created saved it and paste value into token parameter
+
+2. Create GOOGLE_APPLICATION_CREDENTIALS variable in our terraform cloud workspace
+(just paste json output in value section) 
+
+Once added you should successfully initialize remote backend and create sample GKE cluster.
