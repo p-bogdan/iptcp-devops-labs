@@ -3,7 +3,7 @@ terraform {
     organization = "devops-labs"
 
     workspaces {
-      name = "iptcp-devops-labs-sentinel"
+      name = "devops-labs-cli-driven"
     }
 
   }
