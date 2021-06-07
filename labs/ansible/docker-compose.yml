@@ -1,0 +1,54 @@
+services:
+  ansible-controller:
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile_ansible_controller       
+    container_name: ansible-controller
+    image: iptcp/ubuntu-ssh-ansible_2.9.6:0.3 
+    restart: on-failure
+    hostname: ansible-controller
+    environment:
+      MAINTAINER: pbogdan
+    ports:
+      - "2220:22"
+    networks:
+      ansible:
+        ipv4_address: 172.16.0.2
+  ansible-target1:
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile_target1_ubuntu
+    container_name: ansible-target1
+    image: iptcp/ubuntu-ssh_2.9.6:0.1
+    restart: on-failure
+    hostname: ansible-target1
+    environment:
+      MAINTAINER: pbogdan
+    ports:
+      - "2221:22"
+    networks:
+      ansible:
+        ipv4_address: 172.16.0.3
+  ansible-target2:
+    container_name: ansible-target2
+    image: iptcp/centos-ssh:0.1
+    restart: on-failure
+    hostname: ansible-target2
+    environment:
+      MAINTAINER: pbogdan
+    ports:
+      - "2222:22"
+    networks:
+      ansible:
+        ipv4_address: 172.16.0.4
+        
+
+networks:
+    ansible:
+        # use the bridge driver, but enable IPv6
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 172.16.0.0/24
+                  gateway: 172.16.0.1
