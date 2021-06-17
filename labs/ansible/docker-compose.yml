@@ -4,7 +4,10 @@ services:
     #  context: .
     #  dockerfile: Dockerfile_ansible_controller       
     container_name: ansible-controller
-    image: iptcp/ubuntu-ssh-ansible_2.9.6:0.3 
+    image: iptcp/ubuntu-ssh-ansible_2.9.6:0.3
+    #command: "ssh-keygen -t rsa -b 4096 -f ~/.ssh/ansible_docker -q -N"
+    secrets:
+      - user_ssh_key
     restart: on-failure
     hostname: ansible-controller
     environment:
@@ -52,3 +55,6 @@ networks:
             config:
                 - subnet: 172.16.0.0/24
                   gateway: 172.16.0.1
+secrets:
+  user_ssh_key:
+    file: ~/.ssh/ansible_docker
