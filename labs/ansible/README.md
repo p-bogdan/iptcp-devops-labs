@@ -1,5 +1,5 @@
 To run this lab we need to do the following steps:
-1. generate ssh keys, run generate_ssh_keys.sh, keys will be generated locally.
+1. generate ssh keys, run generate_ssh_keys.sh, keys will be stored locally in ~/.ssh/ansible_docker directory.
 2. Run docker-compose up -d.
 That's it.
 
