@@ -1,25 +1,26 @@
 FROM ubuntu:20.04
 WORKDIR /home/ansible
 ENV NOTVISIBLE "in users profile"
-RUN apt-get update && apt-get install -y openssh-server ansible sudo \
+ARG ssh_key_path="~ansible/.ssh/ansible_docker"
+ARG ansible_hosts="/etc/ansible/hosts"
+ARG ansible_config="/home/ansible/.ssh/config"
+RUN apt-get update && apt-get install -y openssh-server ansible openssh-client sudo \
 && mkdir /var/run/sshd \
-&& echo "ansible  ALL = (root) NOPASSWD: /usr/bin/ssh-keygen, /usr/sbin/sshd" >> /etc/sudoers \
+&& echo "ansible  ALL = (ALL) NOPASSWD: /usr/bin/ssh-keygen, /usr/sbin/sshd, /usr/bin/ssh-add, /usr/bin/ssh-agent" >> /etc/sudoers \
 && useradd -m ansible \
-&& mkdir -p /home/ansible/.ssh && chown -R ansible:ansible /home/ansible \
+&& mkdir -p ~ansible/.ssh && chown -R ansible:ansible ~ansible \
 # SSH login fix. Otherwise user is kicked off after login
 && sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
 && sed -i 's/^#host_key_checking/host_key_checking/' /etc/ansible/ansible.cfg \
-&& ssh-keygen -t rsa -b 4096 -f /home/ansible/.ssh/ansible_docker -q -N "" \
-&& echo "Host 172.16.0.*\nStrictHostKeyChecking no\n" >> /home/ansible/.ssh/config \
-&& chown -R ansible:ansible /home/ansible/.ssh/config /home/ansible/.ssh/ansible_docker /home/ansible/.ssh/ansible_docker.pub \
-&& sudo ssh-keygen -A \
+&& echo "Host 172.16.0.*\nStrictHostKeyChecking no\n" >> $ansible_config \
+&& echo "172.16.0.3 ansible_user=ansible ansible_ssh_private_key_file=$ssh_key_path" > $ansible_hosts \
+&& echo "172.16.0.4 ansible_user=ansible ansible_ssh_private_key_file=$ssh_key_path" >> $ansible_hosts \
+&& chown -R ansible:ansible $ansible_config \
+&& ssh-keygen -A \
 && echo "export VISIBLE=now" >> /etc/profile
-
 USER ansible
-
+ 
 
 EXPOSE 22
 CMD sudo /usr/sbin/sshd -D
-
-
 

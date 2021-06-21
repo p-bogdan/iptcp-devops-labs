@@ -4,10 +4,9 @@ services:
     #  context: .
     #  dockerfile: Dockerfile_ansible_controller       
     container_name: ansible-controller
-    image: iptcp/ubuntu-ssh-ansible_2.9.6:0.3
-    #command: "ssh-keygen -t rsa -b 4096 -f ~/.ssh/ansible_docker -q -N"
-    secrets:
-      - user_ssh_key
+    image: iptcp/ansible-controller
+    volumes:
+      - ~/.ssh/ansible_docker:/home/ansible/.ssh/ansible_docker
     restart: on-failure
     hostname: ansible-controller
     environment:
@@ -22,19 +21,27 @@ services:
     #  context: .
     #  dockerfile: Dockerfile_target1_ubuntu
     container_name: ansible-target1
-    image: iptcp/ubuntu-ssh_2.9.6:0.1
+    image: iptcp/ansible-target1
+    volumes:
+      - ~/.ssh/ansible_docker.pub:/home/ansible/.ssh/authorized_keys
     restart: on-failure
     hostname: ansible-target1
     environment:
       MAINTAINER: pbogdan
     ports:
       - "2221:22"
+    
     networks:
       ansible:
         ipv4_address: 172.16.0.3
   ansible-target2:
+    #build:
+    #  context: .
+    #  dockerfile: Dockerfile_target2_centos
     container_name: ansible-target2
-    image: iptcp/centos-ssh:0.1
+    image: iptcp/ansible-target2
+    volumes:
+      - ~/.ssh/ansible_docker.pub:/home/ansible/.ssh/authorized_keys
     restart: on-failure
     hostname: ansible-target2
     environment:
@@ -49,12 +56,10 @@ services:
 networks:
     ansible:
         # use the bridge driver, but enable IPv6
+        name: ansible_lab
         driver: bridge
         ipam:
             driver: default
             config:
                 - subnet: 172.16.0.0/24
                   gateway: 172.16.0.1
-secrets:
-  user_ssh_key:
-    file: ~/.ssh/ansible_docker

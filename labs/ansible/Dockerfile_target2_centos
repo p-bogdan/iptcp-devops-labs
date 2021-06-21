@@ -1,12 +1,14 @@
 FROM centos:8
-WORKDIR /etc/ssh
+WORKDIR /home/ansible
 ENV NOTVISIBLE "in users profile"
 RUN yum -y update && yum install -y openssh-server openssh-clients \
 && mkdir /var/run/sshd \
-&& echo 'root:Passw0rd' | chpasswd \
+&& useradd -m ansible \
+&& mkdir -p /home/ansible/.ssh && chown -R ansible:ansible /home/ansible /home/ansible/.ssh \
 && sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
 # SSH login fix. Otherwise user is kicked off after login
-&& sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd \
+&& sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd  \
+&& rm /run/nologin \
 && echo "export VISIBLE=now" >> /etc/profile
 EXPOSE 22
 CMD ssh-keygen -A && /usr/sbin/sshd -D
