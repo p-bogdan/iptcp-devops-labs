@@ -1,0 +1,12 @@
+Host bastion
+  User ec2-user
+  HostName "${aws_instance.bastion.public_ip}"
+  IdentityFile /home/ec2_user/lab2.pem
+  ForwardAgent yes
+
+Host private
+  User ec2-user
+  HostName "${aws_instance.private_subnet}"
+  ForwardAgent yes
+  ProxyCommand ssh -W %h:%p bastion
+  IdentityFile /home/ec2_user/lab2.pem
