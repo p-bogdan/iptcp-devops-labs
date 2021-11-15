@@ -13,15 +13,43 @@ module "gke" {
   project = "lab-project-282605"
   zone = "us-east1-b"
   cluster_name = "k8s-lab"
-  node_count = "2"
+  node_count = "3"
   machine_type = "n1-standard-1"
   disk_size_gb = 10
   auto_repair = true
   auto_upgrade = true
-  cluster_version = "1.18.12-gke.1210"
+  cluster_version = "1.21.5-gke.1302"
   issue_client_certificate = false
   preemptible = false
   remove_default_node_pool = true
   env = "staging"
 }
 
+resource "helm_release" "consul" {
+  depends_on = [module.gke, module.compute_network]
+  name       = "consul"
+  namespace  = "consul"
+
+  repository = "https://helm.releases.hashicorp.com"
+  chart      = "consul"
+
+  set {
+    name  = "service.type"
+    value = "ClusterIP"
+  }
+}
+
+resource "kubernetes_namespace" "consul" {
+  depends_on = [module.gke, module.compute_network]
+  metadata {
+    annotations = {
+      name = "consul"
+    }
+
+    labels = {
+      mylabel = "consul"
+    }
+
+    name = "consul"
+  }
+}
