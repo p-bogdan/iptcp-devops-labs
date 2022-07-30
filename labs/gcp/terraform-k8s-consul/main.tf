@@ -18,7 +18,7 @@ module "gke" {
   disk_size_gb = 10
   auto_repair = true
   auto_upgrade = true
-  cluster_version = "1.21.5-gke.1302"
+  cluster_version = "1.21.5-gke.1802"
   issue_client_certificate = false
   preemptible = false
   remove_default_node_pool = true
