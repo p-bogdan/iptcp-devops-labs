@@ -1,5 +1,4 @@
-name: wireguard action
-
+name: wireguard
 on:
   push:
     branches:
