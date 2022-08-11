@@ -302,7 +302,7 @@ resource "aws_security_group" "bastion-01-sg" {
     to_port     = 22
     protocol    = "tcp"
     #cidr_blocks = ["92.60.179.185/32"]
-    cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
+    cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
 
   }
 
