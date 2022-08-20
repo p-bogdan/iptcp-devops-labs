@@ -43,8 +43,10 @@ jobs:
         run: |
           terraform validate
       - name: Terraform plan
+        env:  
+            AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
         run: |
-          terraform plan
+          terraform plan -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
       - name: Terraform apply
         env:  
             AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
