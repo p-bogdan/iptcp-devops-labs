@@ -47,6 +47,6 @@ jobs:
           terraform plan
       - name: Terraform apply
         env:  
-            TF_VAR_AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+            AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
         run: |
-          terraform apply -auto-approve -input=false
+          terraform apply -auto-approve -input=false -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"

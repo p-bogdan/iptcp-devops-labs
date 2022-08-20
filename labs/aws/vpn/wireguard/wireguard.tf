@@ -143,6 +143,7 @@ resource "aws_key_pair" "kp" {
 }
 
 
+
 resource "aws_instance" "bastion" {
   depends_on = [aws_internet_gateway.gw]
 
