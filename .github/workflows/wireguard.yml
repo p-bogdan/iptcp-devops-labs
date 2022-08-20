@@ -43,6 +43,5 @@ jobs:
         run: |
           terraform plan
       - name: Terraform apply
-        uses: hashicorp/terraform-github-actions/apply@v0.4.0
-        with:
-          auto_approve: true 
+        run: |
+          terraform apply -auto-approve -input=false
