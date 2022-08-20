@@ -11,8 +11,8 @@ on:
 
 defaults:
  run:
-  shell: bash
-  working-directory: ./labs/aws/vpn/wireguard  
+   shell: bash
+   working-directory: ./labs/aws/vpn/wireguard  
 
 jobs:
   lint:
