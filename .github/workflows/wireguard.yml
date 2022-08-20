@@ -35,6 +35,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Initialize Terraform
         run: |
-          #cd labs/aws/vpn/wireguard
           terraform init -input=false
-      - name: Terraform Validate
