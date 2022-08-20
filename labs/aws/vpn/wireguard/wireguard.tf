@@ -134,27 +134,10 @@ data "aws_ami" "amazon-linux-2" {
   }
 }
 
-resource "tls_private_key" "pk" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-  # algorithm = "ECDSA"
-  # ecdsa_curve = "P384"
-}
-
 resource "aws_key_pair" "kp" {
-  key_name   = "lab2"       # Create a "myKey" to AWS!!
-  public_key = tls_private_key.pk.public_key_openssh
+  key_name   = "aws"
+  public_key = var.AWS_SSH_KEY
 
-  # provisioner "local-exec" { # Create a "myKey.pem" to your computer!!
-  #   #&& chmod 400 ./lab2.pem
-  #   command = "echo '${tls_private_key.pk.private_key_pem}' > ./lab2.pem && chmod 400 ./lab2.pem"
-  # }
-}
-
-resource "local_file" "private_key" {
-    content  = tls_private_key.pk.private_key_pem
-    filename = "lab2.pem"
-    file_permission = "0400"
 }
 
 
@@ -166,6 +149,7 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address          = true
   subnet_id                            = aws_subnet.public_subnets["az_a"].id
   instance_initiated_shutdown_behavior = "terminate"
+  key_name                             = aws_key_pair.kp.key_name
   user_data                            = <<EOF
 		#!/bin/bash
     yum install -y tree
