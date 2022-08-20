@@ -23,6 +23,9 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
+        env:  
+            AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+          
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2

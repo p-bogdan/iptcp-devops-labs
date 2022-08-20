@@ -136,7 +136,7 @@ data "aws_ami" "amazon-linux-2" {
 
 resource "aws_key_pair" "kp" {
   key_name   = "aws"
-  public_key = var.AWS_SSH_KEY
+  public_key = "$AWS_SSH_KEY"
 
 }
 
