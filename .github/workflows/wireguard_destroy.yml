@@ -37,4 +37,4 @@ jobs:
 
       - name: Terraform Destroy
         run: |
-          terraform apply -destroy
+          terraform destroy -force
