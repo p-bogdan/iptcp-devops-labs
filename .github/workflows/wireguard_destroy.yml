@@ -14,6 +14,9 @@ on:
   #To be able to run it manually    
   workflow_dispatch:
 
+env:
+  AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+
 defaults:
  run:
    shell: bash
@@ -40,4 +43,4 @@ jobs:
 
       - name: Terraform Destroy
         run: |
-          terraform destroy -auto-approve
+          terraform destroy -auto-approve -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
