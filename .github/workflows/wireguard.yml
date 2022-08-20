@@ -43,6 +43,7 @@ jobs:
         run: |
           terraform plan
       - name: Terraform apply
+        uses: hashicorp/terraform-github-actions/apply@v0.4.0
         run: |
           terraform apply
         with:
