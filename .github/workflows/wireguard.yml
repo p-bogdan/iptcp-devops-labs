@@ -15,9 +15,9 @@ defaults:
    working-directory: ./labs/aws/vpn/wireguard  
 
 jobs:
-  lint:
-    name: Lint
-    runs-on: ubuntu-20.04
+  wireguard:
+    name: Wireguard infra provisioning
+    runs-on: ubuntu-22.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
