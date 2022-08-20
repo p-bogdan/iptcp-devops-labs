@@ -23,8 +23,6 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v3
-        env:  
-            TF_VAR_AWS_SSH_KEY: ${{ secrets.TF_VAR_AWS_SSH_KEY }}
           
 
       - name: Setup Terraform
@@ -48,5 +46,7 @@ jobs:
         run: |
           terraform plan
       - name: Terraform apply
+        env:  
+            TF_VAR_AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
         run: |
           terraform apply -auto-approve -input=false
