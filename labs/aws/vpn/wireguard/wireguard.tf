@@ -207,9 +207,9 @@ key_name = aws_key_pair.kp.key_name
   }
 }
 
-data "http" "myip" {
-  url = "http://ipv4.icanhazip.com"
-}
+# data "http" "myip" {
+#   url = "http://ipv4.icanhazip.com"
+# }
 
 resource "aws_security_group" "bastion-01-sg" {
   name        = "bastion-01-sg"
@@ -221,8 +221,8 @@ resource "aws_security_group" "bastion-01-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    #cidr_blocks = ["92.60.179.185/32"]
-    cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
+    cidr_blocks = ["92.60.179.185/32"]
+    #cidr_blocks = ["${chomp(data.http.myip.response_body)}/32"]
 
   }
 
@@ -250,8 +250,8 @@ resource "aws_security_group" "private" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    #cidr_blocks = ["92.60.179.185/32"]
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["92.60.179.185/32"]
+    #cidr_blocks = ["0.0.0.0/0"]
 
   }
 
