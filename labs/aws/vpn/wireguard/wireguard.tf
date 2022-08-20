@@ -149,7 +149,6 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address          = true
   subnet_id                            = aws_subnet.public_subnets["az_a"].id
   instance_initiated_shutdown_behavior = "terminate"
-  key_name                             = aws_key_pair.kp.key_name
   user_data                            = <<EOF
 		#!/bin/bash
     yum install -y tree
@@ -169,7 +168,7 @@ resource "aws_instance" "bastion" {
   }
 
 vpc_security_group_ids = [aws_security_group.bastion-01-sg.id]
-key_name = aws_key_pair.kp.key_name
+key_name               = aws_key_pair.kp.key_name
 
 # connection {
 #     user        = "ec2-user"
