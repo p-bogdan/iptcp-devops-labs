@@ -9,14 +9,15 @@ on:
   #To be able to run it manually    
   workflow_dispatch:
 
+defaults:
+ run:
+  shell: bash
+  working-directory: labs/aws/vpn/wireguard  
+
 jobs:
   lint:
     name: Lint
     runs-on: ubuntu-20.04
-    defaults:
-      run:
-        shell: bash
-        working-directory: labs/aws/vpn/wireguard
     steps:
       - name: Check out code
         uses: actions/checkout@v2
