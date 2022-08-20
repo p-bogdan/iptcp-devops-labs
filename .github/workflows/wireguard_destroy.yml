@@ -1,13 +1,16 @@
 name: Wireguard_destroy
 on:
-  push:
-    branches:
-      - master
-      - main
+  #push:
+  #  branches:
+  #    - master
+  #    - main
   pull_request:
     branches:
       - master
       - main
+  schedule:
+    # Runs "at minute 55 past every hour" (see https://crontab.guru)
+    - cron: '0 0 * * *'
   #To be able to run it manually    
   workflow_dispatch:
 
