@@ -36,3 +36,6 @@ jobs:
       - name: Initialize Terraform
         run: |
           terraform init -input=false
+      - name: Terraform Validate
+        run: |
+          terraform validate
