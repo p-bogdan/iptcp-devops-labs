@@ -1,4 +1,4 @@
-name: Wireguard
+name: Wireguard_provision
 on:
   push:
     branches:
