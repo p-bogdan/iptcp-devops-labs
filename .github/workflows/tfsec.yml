@@ -12,6 +12,11 @@ on:
     branches: [ "master", "main" ]  
   schedule:
     - cron: '24 9 * * 2'
+    
+defaults:
+ run:
+   #shell: bash
+   working-directory: ./labs/aws/vpn/wireguard 
 
 jobs:
   tfsec:
