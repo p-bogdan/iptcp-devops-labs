@@ -157,11 +157,11 @@ resource "aws_instance" "bastion" {
     yum install -y tree 
     amazon-linux-extras install -y epel
     # set repo url and file #
-    export rwfile="/etc/yum.repos.d/wireguard.repo"
-    export rwurl="https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo"
+    #export rwfile="/etc/yum.repos.d/wireguard.repo"
+    #export rwurl="https://copr.fedorainfracloud.org/coprs/jdoss/wireguard/repo/epel-7/jdoss-wireguard-epel-7.repo"
     # Download it
-    wget --output-document="$rwfile" "$rwurl"
-    yum clean all && yum install -y wireguard-dkms wireguard-tools
+    #wget --output-document="$rwfile" "$rwurl"
+    #yum clean all && yum install -y wireguard-dkms wireguard-tools
 	EOF
   root_block_device {
     #device_name           = "/dev/xvda"
