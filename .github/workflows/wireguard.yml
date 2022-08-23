@@ -61,7 +61,7 @@ jobs:
           targets: ""
   
   deployAnsible:
-    needs: ansible_lint
+    needs: wireguard
     runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v3
