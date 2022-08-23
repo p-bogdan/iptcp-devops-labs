@@ -51,3 +51,22 @@ jobs:
       - name: Terraform apply
         run: |
           terraform apply -auto-approve -input=false -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
+  ansible_lint:
+    name: Provisioning ansible infra part
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Lint Ansible Playbook
+        uses: ansible/ansible-lint-action@master
+        with:
+          targets: ""
+  
+  deployAnsible:
+    needs: ansible_lint
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/ansible
+      with: 
+        playbook: playbook.yml
+        inventory: localhost
+        
