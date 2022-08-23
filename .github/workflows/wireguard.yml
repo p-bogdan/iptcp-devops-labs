@@ -23,6 +23,10 @@ jobs:
   wireguard:
     name: Wireguard infra provisioning
     runs-on: ubuntu-22.04
+    permissions:
+      #packages: write
+      contents: read
+      id-token: write
     steps:
       - name: Check out code
         uses: actions/checkout@v3
