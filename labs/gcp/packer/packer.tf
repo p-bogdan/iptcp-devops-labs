@@ -30,6 +30,7 @@ shielded_instance_config {
 
   metadata = {
     foo = "bar"
+    block-project-ssh-keys = true
   }
 
   metadata_startup_script = "echo Hello from packer > /test.txt"
