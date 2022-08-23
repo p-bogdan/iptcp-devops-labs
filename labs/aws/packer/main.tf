@@ -17,4 +17,7 @@ root_block_device {
   tags = {
     Name = "Using Packer AMI"
   }
+  metadata_options {
+     http_tokens = "required"
+     }  
 }
