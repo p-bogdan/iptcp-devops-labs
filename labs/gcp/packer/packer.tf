@@ -39,9 +39,6 @@ shielded_instance_config {
   network_interface {
     network = "default"
 
-    access_config {
-      // Ephemeral IP
-    }
   }
 
   metadata = {
