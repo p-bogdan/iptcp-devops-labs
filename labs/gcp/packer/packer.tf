@@ -12,6 +12,9 @@ resource "google_compute_instance" "default" {
     }
   }
 
+shielded_instance_config {
+  enable_vtpm = true
+}
   // Local SSD disk
   scratch_disk {
     interface = "SCSI"
