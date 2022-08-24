@@ -67,16 +67,17 @@ jobs:
   deployAnsible:
     needs: wireguard
     runs-on: ubuntu-22.04
-    permissions:
+    #permissions:
       #packages: write
-      contents: read
-      id-token: write
+    #  contents: read
+    #  id-token: write
     steps:
     - uses: actions/checkout@v3
     - uses: ./.github/actions/ansible
     #- uses: ./github/actions/ansible
       with: 
-        #playbook: playbook.yml
-        playbook: ./.github/actions/ansible/playbook.yml
+        playbook: playbook.yml
+        directory: ./
+        #playbook: ./.github/actions/ansible/playbook.yml
         inventory: localhost
         
