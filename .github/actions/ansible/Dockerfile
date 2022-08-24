@@ -1,6 +1,6 @@
 FROM alpine:3.16
 
-WORKDIR /ansible
+#WORKDIR /ansible
 
 ENV ANSIBLE_VERSION=2.13.3
 ENV ANSIBLE_LINT_VERSION=6.5.0
@@ -16,4 +16,4 @@ RUN apk update \
 
 COPY playbook.yml /ansible
 
-ENTRYPOINT ["ansible-playbook","playbook.yml"]
+#ENTRYPOINT ["ansible-playbook","playbook.yml"]
