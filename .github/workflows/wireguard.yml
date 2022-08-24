@@ -67,6 +67,10 @@ jobs:
   deployAnsible:
     needs: wireguard
     runs-on: ubuntu-22.04
+    permissions:
+      #packages: write
+      contents: read
+      id-token: write
     steps:
     - uses: actions/checkout@v3
     - uses: ./.github/actions/ansible
