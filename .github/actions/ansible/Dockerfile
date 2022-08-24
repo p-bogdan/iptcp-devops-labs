@@ -14,6 +14,6 @@ RUN apk update \
   && pip3 install ansible-core==${ANSIBLE_VERSION} \
   && pip3 install ansible-lint==${ANSIBLE_LINT_VERSION}
 
-COPY playbook.yml /ansible
+#COPY playbook.yml /ansible
 
 #ENTRYPOINT ["ansible-playbook","playbook.yml"]
