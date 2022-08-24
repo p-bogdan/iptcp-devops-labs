@@ -64,13 +64,13 @@ jobs:
         with:
           targets: ""
   
-  # deployAnsible:
-  #   needs: wireguard
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #   - uses: actions/checkout@v3
-  #   - uses: ./.github/actions/ansible
-  #     with: 
-  #       playbook: playbook.yml
-  #       inventory: localhost
+  deployAnsible:
+    needs: wireguard
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+    - uses: ./.github/actions/ansible
+      with: 
+        playbook: playbook.yml
+        inventory: localhost
         
