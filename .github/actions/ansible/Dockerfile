@@ -16,4 +16,4 @@ RUN apk update \
 
 COPY playbook.yml /ansible
 
-#ENTRYPOINT ["ansible-playbook","playbook.yml"]
+ENTRYPOINT ["ansible-playbook","playbook.yml"]
