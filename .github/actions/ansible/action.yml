@@ -9,14 +9,14 @@ inputs:
     description: 'Ansible inventory to use'
     required: true
     default: localhost
-  directory:
-    description: 'Ansible playbook running dir'
-    required: true
-    default: .
+  #directory:
+  #  description: 'Ansible playbook running dir'
+  #  required: true
+  #  default: .
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
     - ${{ inputs.playbook }}
     - ${{ inputs.inventory }}
-    - ${{ inputs.directory }}
+  entrypoint: ansible-playbook playbook.yml
