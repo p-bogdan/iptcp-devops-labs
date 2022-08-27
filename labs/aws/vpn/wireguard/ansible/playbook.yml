@@ -1,6 +1,6 @@
 ---
 - name: install Docker
-  hosts: localhost
+  hosts: 3.81.229.182
   become: true
   vars:
     docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
