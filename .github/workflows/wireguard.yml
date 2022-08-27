@@ -67,12 +67,12 @@ jobs:
       # echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
       - name: IP output
         #id: ip_output
-        id: step1
+        id: ip_output
         run: |
           echo "::set-output name=test::hello"
     outputs:
       #ip_output: ${{ steps.ip_output.outputs.IP }}
-      output1: ${{ steps.step1.outputs.test }}
+      ip_output: ${{ steps.ip_output.outputs.test }}
           
           
   ansible_lint:
@@ -136,7 +136,7 @@ jobs:
       #     echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
       - name: Check if we can use IP var
         run: |
-          echo ${{needs.wireguard.outputs.output1}}
+          echo ${{needs.wireguard.outputs.ip_output}}
           ls -al    
       #- name: Deploy APIService
       #  uses: dawidd6/action-ansible-playbook@v2
