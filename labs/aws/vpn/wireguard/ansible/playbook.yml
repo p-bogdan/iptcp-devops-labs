@@ -1,8 +1,14 @@
 ---
-- name: Provisioning wireguard
-  hosts: localhost
-  gather_facts: false
-  connection: local
+- name: install Docker
+  hosts: all
+  become: true
   tasks:
-    - name: ping localhost
-      ping:
+    - name: Install apt-transport-https
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - lsb-release
+          - gnupg
+        state: latest
+        update_cache: true
