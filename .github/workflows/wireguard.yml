@@ -64,7 +64,7 @@ jobs:
       # terraform output -json |jq --raw-output '.[].value'
       - name: Terraform ip output
         run: |
-          terraform output -json
+          terraform output -json | jq --raw-output '.[].value'
           
           
   ansible_lint:
