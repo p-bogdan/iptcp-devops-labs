@@ -64,13 +64,15 @@ jobs:
       #- name: Install jq
       #  run: jq --version
       # terraform output -json |jq --raw-output '.[].value'
+      # echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
       - name: IP output
-        id: ip_output
+        #id: ip_output
+        id: step1
         run: |
-          echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
-          echo "::set-output name=ip_output::hello"
+          echo "::set-output name=test::hello"
     outputs:
-      ip_output: ${{ steps.ip_output.outputs.IP }}
+      #ip_output: ${{ steps.ip_output.outputs.IP }}
+      output1: ${{ steps.step1.outputs.test }}
           
           
   ansible_lint:
@@ -134,7 +136,7 @@ jobs:
       #     echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
       - name: Check if we can use IP var
         run: |
-          echo "${{ needs.wireguard.ip_output.outputs.ip_output }}"
+          echo ${{needs.wireguard.outputs.output1}}
           ls -al    
       #- name: Deploy APIService
       #  uses: dawidd6/action-ansible-playbook@v2
