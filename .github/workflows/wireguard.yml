@@ -131,10 +131,10 @@ jobs:
         working-directory: ./labs/aws/vpn/wireguard
         run: |
            terraform init
-           echo "IP=$(terraform output -raw bastion_public_ip)"
+           echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
       - name: Check if we can use IP var
         run: |
-          echo "${{ IP }}"
+          echo "${{ env. IP }}"
           ls -al    
       #- name: Deploy APIService
       #  uses: dawidd6/action-ansible-playbook@v2
