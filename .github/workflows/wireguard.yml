@@ -96,11 +96,11 @@ jobs:
           INVENTORY: ${{ secrets.ANSIBLE_INVENTORY }}
         run: 'echo "$ANSIBLE_INVENTORY" > inventory'
       - name: run playbook
-        #run: |
-        #  ansible-playbook -i inventory ./labs/aws/vpn/wireguard/ansible/playbook.yml
-        
         run: |
-          ls -al
+          ansible-playbook -i inventory playbook.yml
+        
+        #run: |
+        #  ls -al
   
   # deployAnsible:
   #   needs: ansible_lint
