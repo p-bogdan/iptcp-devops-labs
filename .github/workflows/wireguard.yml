@@ -87,7 +87,7 @@ jobs:
 
   run_playbook:
     name: Run ansible playbok
-    needs: [wireguard, ansible_lint]
+    needs: [wireguard]
     runs-on: ubuntu-22.04
     defaults:
       run:
