@@ -96,8 +96,11 @@ jobs:
           INVENTORY: ${{ secrets.ANSIBLE_INVENTORY }}
         run: 'echo "$ANSIBLE_INVENTORY" > inventory'
       - name: run playbook
+        #run: |
+        #  ansible-playbook -i inventory ./labs/aws/vpn/wireguard/ansible/playbook.yml
+        
         run: |
-          ansible-playbook -i inventory ./labs/aws/vpn/wireguard/ansible/playbook.yml
+          ls -al
   
   # deployAnsible:
   #   needs: ansible_lint
