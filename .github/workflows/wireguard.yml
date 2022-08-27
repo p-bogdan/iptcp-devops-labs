@@ -116,11 +116,11 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: playbook.yml
-          #directory: ./
+          directory: ./
           key: ${{secrets.LAB_SSH_PRIV}}
           inventory: |
             [all]
-            ${{ needs.wireguard.outputs.ip_output }}
+              ${{ needs.wireguard.outputs.ip_output }}
           options: |
             --verbose
         
