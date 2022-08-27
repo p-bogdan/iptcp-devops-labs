@@ -120,7 +120,7 @@ jobs:
           key: ${{secrets.LAB_SSH_PRIV}}
           inventory: |
             [all]
-              ${{ needs.wireguard.outputs.ip_output }} ansible_ssh_private_key_file=${{secrets.LAB_SSH_PRIV}}
+            ${{ needs.wireguard.outputs.ip_output }} ansible_ssh_private_key_file=${{secrets.LAB_SSH_PRIV}}
           options: |
             --verbose
         
