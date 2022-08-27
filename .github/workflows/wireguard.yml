@@ -108,47 +108,21 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
-      #- name: Ip to connect
+      #- name: Check if we can use IP var
       #  run: |
-      #    echo "IP=$(terraform output -raw bastion_public_ip)"
-      #echo "${{ env.IP }}"
-      #- name: Configure AWS Credentials
-      #  uses: aws-actions/configure-aws-credentials@v1
-      #  with:
-      #    aws-region: us-east-1
-      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      #- name: Initialize Terraform
-      #  run: |
-      #    terraform init -input=false
-      #- name: Configure AWS Credentials
-      #  uses: aws-actions/configure-aws-credentials@v1
-      #  with:
-      #    aws-region: us-east-1
-      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #- name: Run terraform output
-        #uses: hashicorp/setup-terraform@v2
-      #  working-directory: ./labs/aws/vpn/wireguard
-      #  run: |
-      #     terraform init
-      #     echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
-      - name: Check if we can use IP var
-        run: |
-          echo ${{needs.wireguard.outputs.ip_output}}
-          ls -al    
-      #- name: Deploy APIService
-      #  uses: dawidd6/action-ansible-playbook@v2
-      #  with:
-      #    playbook: playbook.yml
-      #    directory: ./
-      #    key: ${{secrets.LAB_SSH_PRIV}}
-      #    inventory: |
-      #      [all]
-      #      ${{ env.IP }}
-      #    options: |
-      #      --verbose
+      #    echo ${{needs.wireguard.outputs.ip_output}}
+      #    ls -al    
+      - name: Deploy APIService
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: playbook.yml
+          directory: ./
+          key: ${{secrets.LAB_SSH_PRIV}}
+          inventory: |
+            [all]
+            ${{ needs.wireguard.outputs.ip_output }}
+          options: |
+            --verbose
         
         #run: |
         #  ls -al
