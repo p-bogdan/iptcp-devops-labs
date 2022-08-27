@@ -61,9 +61,11 @@ jobs:
           terraform apply -auto-approve -input=false -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
       #- name: Install jq
       #  run: jq --version
+      # terraform output -json |jq --raw-output '.[].value'
       - name: Terraform ip output
         run: |
-          terraform output -json |jq --raw-output '.[].value'
+          terraform output -json
+          
           
   ansible_lint:
     name: Provisioning ansible infra part
