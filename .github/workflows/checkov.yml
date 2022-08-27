@@ -1,4 +1,5 @@
 #on: [push, workflow_dispatch]
+name: checkov-run
 on: [workflow_dispatch]
 
 permissions:
