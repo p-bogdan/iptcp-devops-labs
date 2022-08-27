@@ -23,11 +23,12 @@ jobs:
   wireguard:
     name: Wireguard infra provisioning
     runs-on: ubuntu-22.04
+    
     defaults:
       run:
         working-directory: ./labs/aws/vpn/wireguard
     permissions:
-      #packages: write
+      packages: write
       contents: read
       id-token: write
     steps:
