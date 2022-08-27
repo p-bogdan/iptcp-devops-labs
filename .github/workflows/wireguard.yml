@@ -93,9 +93,9 @@ jobs:
     name: Run ansible playbok
     needs: [wireguard]
     runs-on: ubuntu-22.04
-    #defaults:
-    #  run:
-    #    working-directory: ./labs/aws/vpn/wireguard/ansible
+    defaults:
+      run:
+        working-directory: ./labs/aws/vpn/wireguard/ansible
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python 3.10
