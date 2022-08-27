@@ -69,10 +69,10 @@ jobs:
         #id: ip_output
         id: ip_output
         run: |
-          echo "::set-output name=test::hello"
+          echo "::set-output name=ip_output::hello"
     outputs:
       #ip_output: ${{ steps.ip_output.outputs.IP }}
-      ip_output: ${{ steps.ip_output.outputs.test }}
+      ip_output: ${{ steps.ip_output.outputs.ip_output }}
           
           
   ansible_lint:
