@@ -134,7 +134,7 @@ jobs:
            echo "IP=$(terraform output -raw bastion_public_ip)"
       - name: Check if we can use IP var
         run: |
-          echo "${{ env.IP }}"
+          echo "${{ IP }}"
           ls -al    
       #- name: Deploy APIService
       #  uses: dawidd6/action-ansible-playbook@v2
