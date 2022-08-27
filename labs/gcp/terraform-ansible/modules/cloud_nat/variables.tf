@@ -1,8 +1,8 @@
 variable "network_self_link" {
-default = ""
+  default = ""
 }
 variable "subnetwork_id" {
-default = ""
+  default = ""
 }
 /* variable "ipv4_range_proxy_subnet" {
 default = ""    
@@ -11,7 +11,7 @@ default = ""
  default = ""   
 } */
 
- variable "region" {
-    default = ""
-} 
+variable "region" {
+  default = ""
+}
 

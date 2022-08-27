@@ -17,7 +17,7 @@ resource "google_compute_instance" "default" {
   name         = "test"
   machine_type = "n1-standard-1"
   zone         = "europe-west1-b"
-  
+
 
   tags = ["foo", "bar"]
 
@@ -28,9 +28,9 @@ resource "google_compute_instance" "default" {
     kms_key_self_link = google_kms_crypto_key.example-key.self_link
   }
 
-shielded_instance_config {
-  enable_vtpm = true
-}
+  shielded_instance_config {
+    enable_vtpm = true
+  }
   // Local SSD disk
   scratch_disk {
     interface = "SCSI"
@@ -42,7 +42,7 @@ shielded_instance_config {
   }
 
   metadata = {
-    foo = "bar"
+    foo                    = "bar"
     block-project-ssh-keys = true
   }
 

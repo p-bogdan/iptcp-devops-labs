@@ -186,7 +186,7 @@ resource "tls_private_key" "pk" {
 }
 
 resource "aws_key_pair" "kp" {
-  key_name   = "lab2"       # Create a "myKey" to AWS!!
+  key_name   = "lab2" # Create a "myKey" to AWS!!
   public_key = tls_private_key.pk.public_key_openssh
 
   # provisioner "local-exec" { # Create a "myKey.pem" to your computer!!
@@ -196,9 +196,9 @@ resource "aws_key_pair" "kp" {
 }
 
 resource "local_file" "private_key" {
-    content  = tls_private_key.pk.private_key_pem
-    filename = "lab2.pem"
-    file_permission = "0400"
+  content         = tls_private_key.pk.private_key_pem
+  filename        = "lab2.pem"
+  file_permission = "0400"
 }
 
 
@@ -228,21 +228,21 @@ resource "aws_instance" "bastion" {
     volume_type = "gp2"
   }
 
-vpc_security_group_ids = [aws_security_group.bastion-01-sg.id]
-key_name = aws_key_pair.kp.key_name
+  vpc_security_group_ids = [aws_security_group.bastion-01-sg.id]
+  key_name               = aws_key_pair.kp.key_name
 
-# connection {
-#     user        = "ec2-user"
-#     private_key = "${tls_private_key.pk.private_key_pem}"
-#     agent       = false
-#     #host        = aws_instance.private_subnet.private_ip
-#     host        = aws_instance.bastion.public_ip
-#   }
+  # connection {
+  #     user        = "ec2-user"
+  #     private_key = "${tls_private_key.pk.private_key_pem}"
+  #     agent       = false
+  #     #host        = aws_instance.private_subnet.private_ip
+  #     host        = aws_instance.bastion.public_ip
+  #   }
 
-#   provisioner "file" {
-#     source      = "config"
-#     destination = "/tmp/config"
-#   }
+  #   provisioner "file" {
+  #     source      = "config"
+  #     destination = "/tmp/config"
+  #   }
 
   tags = {
     Name  = "bastion-01"
@@ -259,8 +259,8 @@ resource "aws_instance" "private_subnet" {
   subnet_id                            = aws_subnet.private_subnets["az_b"].id
   instance_initiated_shutdown_behavior = "terminate"
 
-vpc_security_group_ids = [aws_security_group.private.id]
-key_name = aws_key_pair.kp.key_name
+  vpc_security_group_ids = [aws_security_group.private.id]
+  key_name               = aws_key_pair.kp.key_name
 
 
   # provisioner "remote-exec" {
@@ -268,20 +268,20 @@ key_name = aws_key_pair.kp.key_name
   #     "cat /tmp/config.sh |tee -a > /home/ec2_user/.ssh/config"
   #   ]
   # }
-# provisioner "file" {
-#     source      = "./config"
-#     destination = "/home/ec2_user/.ssh/config"
-#   }
-#   connection {
-#     type     = "ssh"
-#     user     = "ec2_user"
-#     private_key = file("lab2.pem")
-#     host     = aws_instance.private_subnet.public_ip
-#   }
+  # provisioner "file" {
+  #     source      = "./config"
+  #     destination = "/home/ec2_user/.ssh/config"
+  #   }
+  #   connection {
+  #     type     = "ssh"
+  #     user     = "ec2_user"
+  #     private_key = file("lab2.pem")
+  #     host     = aws_instance.private_subnet.public_ip
+  #   }
 
 
   tags = {
-    Name  = "private-host"
+    Name = "private-host"
   }
 }
 

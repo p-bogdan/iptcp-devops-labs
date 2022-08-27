@@ -1,6 +1,6 @@
 provider "google" {
-  project = "lab-project-282605"
-  region  = "europe-west1"
+  project     = "lab-project-282605"
+  region      = "europe-west1"
   credentials = var.GOOGLE_APPLICATION_CREDENTIALS
 }
 

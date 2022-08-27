@@ -14,7 +14,7 @@ resource "kubernetes_namespace" "app" {
 
 resource "kubernetes_deployment" "nginx" {
   metadata {
-    name = "scalable-nginx-example"
+    name      = "scalable-nginx-example"
     namespace = kubernetes_namespace.app.metadata.0.name
     labels = {
       app = "ScalableNginxExample"
@@ -102,8 +102,8 @@ resource "kubernetes_service" "example" {
     }
     session_affinity = "ClientIP"
     port {
-      port        = 8080
-      protocol    = "TCP"
+      port     = 8080
+      protocol = "TCP"
     }
 
     type = "LoadBalancer"

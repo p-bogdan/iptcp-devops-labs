@@ -8,10 +8,13 @@ defaults:
    working-directory: ./labs
 
 jobs:
-  delivery:
+  terraform-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@master
+      - name: Terraform fmt
+        run: |
+          terraform fmt -recursive
       - name: Lint Terraform
         uses: actionshub/terraform-lint@main

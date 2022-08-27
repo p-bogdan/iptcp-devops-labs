@@ -6,16 +6,16 @@ module "compute_network" {
   region              = var.region
   network_name        = var.network_name
   ipv4_range_backends = var.ipv4_range_backends
- # source = "git::https://github.com/ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/vpc"
-source = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/vpc"
-  
+  # source = "git::https://github.com/ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/vpc"
+  source = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/vpc"
+
 
 }
 ###############################################################################
 #Cloud NAT
 
 module "cloud_nat" {
-  source = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/cloud_nat"
+  source            = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/cloud_nat"
   network_self_link = module.compute_network.network_self_link
   subnetwork_id     = module.compute_network.subnetwork_id
   region            = var.region
@@ -26,17 +26,17 @@ module "cloud_nat" {
 module "sql" {
   source            = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/sql"
   network_self_link = module.compute_network.network_self_link
-  region = var.region
+  region            = var.region
 }
 ###############################################################################
 #Bucket for application data
 
 module "bucket" {
 
-  location = "EU"
-  source   = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/bucket"
+  location      = "EU"
+  source        = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/bucket"
   random_id_hex = module.sql.random_id_hex
-  entity = "allUsers"
+  entity        = "allUsers"
 }
 ###############################################################################
 
@@ -44,13 +44,13 @@ module "bucket" {
 
 #INSTANCE
 module "instance" {
-  source  = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/instance"
-  region  = var.region
-  project = var.project
-  network_name        = var.network_name
-  subnetwork_id       = module.compute_network.subnetwork_id
-  google_sql_instance = module.sql.google_sql_instance
-  google_sql_database = module.sql.google_sql_database
+  source                       = "git@github.com:ciscoios/iptcp-gcp-reusable-modules.git//modules/gcp/instance"
+  region                       = var.region
+  project                      = var.project
+  network_name                 = var.network_name
+  subnetwork_id                = module.compute_network.subnetwork_id
+  google_sql_instance          = module.sql.google_sql_instance
+  google_sql_database          = module.sql.google_sql_database
   startup-script               = "startup-script_project.sh"
   sql_user_password            = module.sql.sql_user_password
   sql_instance_connection_name = module.sql.sql_instance_connection_name

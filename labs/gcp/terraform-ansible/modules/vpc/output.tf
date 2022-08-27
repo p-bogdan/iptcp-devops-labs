@@ -17,7 +17,7 @@ output "subnetwork_id" {
 }
 
 output "subnet_ipv4_range" {
-value = google_compute_subnetwork.gcp-lab-subnet.ip_cidr_range  
+  value = google_compute_subnetwork.gcp-lab-subnet.ip_cidr_range
 }
 
 output "subnetwork_self_link" {
@@ -36,7 +36,7 @@ output "backend_subnet_range" {
 } */
 
 output "network_self_link" {
-value = google_compute_network.gcp-lab-network.self_link
+  value = google_compute_network.gcp-lab-network.self_link
 }
 
 /* output "proxy-subnet-http-allow-rule" {

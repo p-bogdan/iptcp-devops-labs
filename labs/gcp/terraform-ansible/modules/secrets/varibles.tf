@@ -1,21 +1,21 @@
 variable "region" {
-    default = ""
+  default = ""
 }
 
 variable "secret_id" {
-    default = "tf_ansible_secrets"
+  default = "tf_ansible_secrets"
 }
 
 variable "template_file" {
-    default = ""
+  default = ""
 }
 
 variable "random_id" {
-    default = ""
+  default = ""
 }
 
 variable "secret_data" {
-    default = ""
+  default = ""
 }
 
 /* variable "enabled_secret_versioning" {
@@ -24,7 +24,7 @@ variable "secret_data" {
 } */
 
 variable "local_file" {
-    default = ""
+  default = ""
 }
 
 /* variable "secret_version" {
@@ -32,5 +32,5 @@ variable "local_file" {
 } */
 
 variable "tf_ansible_vars_file" {
-    default = ""
+  default = ""
 }

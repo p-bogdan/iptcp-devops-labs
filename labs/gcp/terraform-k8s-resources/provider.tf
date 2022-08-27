@@ -19,12 +19,12 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    host  = "https://${module.gke.k8s-cluster-endpoint}"
-    token = var.access_token
+    host        = "https://${module.gke.k8s-cluster-endpoint}"
+    token       = var.access_token
     config_path = module.gke.kubeconfig
     cluster_ca_certificate = base64decode(
-    module.gke.cluster_ca_cert
-  )
+      module.gke.cluster_ca_cert
+    )
   }
 }
 

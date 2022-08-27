@@ -6,5 +6,5 @@
     default = ""
 } */
 variable "random_id_hex" {
-    default = ""
+  default = ""
 }

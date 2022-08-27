@@ -35,30 +35,30 @@ resource "aws_vpc" "my-vpc-01" {
 }
 
 resource "aws_subnet" "public_subnets" {
-  
+
   for_each                = local.public_subnets
   vpc_id                  = aws_vpc.my-vpc-01.id
   cidr_block              = each.value.cidr_block
   availability_zone       = each.value.availability_zone
   map_public_ip_on_launch = true
-  depends_on = [aws_vpc.my-vpc-01]
+  depends_on              = [aws_vpc.my-vpc-01]
   tags = {
     Name = "${each.value.name}"
   }
 }
 
 resource "aws_security_group" "EC2-sg" {
-  
+
   name        = "EC2-sg"
   description = "SSH connection"
   vpc_id      = aws_vpc.my-vpc-01.id
-  depends_on = [aws_vpc.my-vpc-01]
+  depends_on  = [aws_vpc.my-vpc-01]
   ingress {
     description = "Petro Bogdan home IP"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks  = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
     #cidr_blocks = ["92.60.179.185/32"]
     #cidr_blocks = ["${chomp(data.http.myip.body)}/32"]
 
@@ -81,7 +81,7 @@ resource "aws_security_group" "EFS-sg" {
   name        = "EFS-sg"
   description = "Allow only EC2"
   vpc_id      = aws_vpc.my-vpc-01.id
-  depends_on = [aws_vpc.my-vpc-01, aws_security_group.EC2-sg]
+  depends_on  = [aws_vpc.my-vpc-01, aws_security_group.EC2-sg]
   ingress {
     description = "Petro Bogdan home IP"
     from_port   = 2049

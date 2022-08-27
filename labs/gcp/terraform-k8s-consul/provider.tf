@@ -19,12 +19,12 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    host  = "https://${module.gke.k8s-cluster-endpoint}"
-    token = module.gke.access_token
+    host        = "https://${module.gke.k8s-cluster-endpoint}"
+    token       = module.gke.access_token
     config_path = module.gke.kubeconfig
     cluster_ca_certificate = base64decode(
-    module.gke.cluster_ca_cert
-  )
+      module.gke.cluster_ca_cert
+    )
   }
 }
 
@@ -35,11 +35,11 @@ terraform {
       version = "~> 4.0.0"
     }
     kubernetes = {
-      source = "hashicorp/kubernetes"
+      source  = "hashicorp/kubernetes"
       version = "~> 2.6.1"
     }
     helm = {
-      source = "hashicorp/helm"
+      source  = "hashicorp/helm"
       version = "~> 2.4.1"
     }
   }

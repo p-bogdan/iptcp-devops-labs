@@ -1,13 +1,13 @@
 variable "region" {
-default = ""
+  default = ""
 }
 variable "zone" {
- default = "europe-west1-b" 
+  default = "europe-west1-b"
 }
 
-  variable "project" {
+variable "project" {
   default = ""
-} 
+}
 variable "instance_template_name" {
   description = "Name prefix for the instance template"
   default     = "bookshelf-app-template"
@@ -18,19 +18,19 @@ variable "machine_type" {
 }
 
 variable "network_name" {
-default = ""
+  default = ""
 }
 
 variable "subnetwork_id" {
-default = ""    
+  default = ""
 }
 
 variable "google_sql_instance" {
-default = ""   
+  default = ""
 }
 
 variable "google_sql_database" {
-default = ""
+  default = ""
 }
 
 
@@ -41,13 +41,13 @@ variable "bookshelf-app-bucket" {
 #Instance template metadata
 ###########
 
-  variable "startup-script" {
- # description = "User startup script to run when instances spin up"
-#  default     = "startup-script_project.sh"
-#  default = "startup-script_project.sh"
- # type    = string
-  default = "" 
- } 
+variable "startup-script" {
+  # description = "User startup script to run when instances spin up"
+  #  default     = "startup-script_project.sh"
+  #  default = "startup-script_project.sh"
+  # type    = string
+  default = ""
+}
 /*  variable "metadata" {
   type        = map(string)
   description = "Metadata, provided as a map"
@@ -61,12 +61,12 @@ variable "bookshelf-app-bucket" {
 }   */
 
 ###ANSIBLE VARS#########################
-     variable "tf_ansible_vars_file" {
+variable "tf_ansible_vars_file" {
   default = "tf_ansible_vars.yml"
-#default = ""
-}  
-   
- variable "sql_user_password" {
+  #default = ""
+}
+
+variable "sql_user_password" {
   default = ""
 }
 
@@ -94,7 +94,7 @@ variable "sql_database_name" {
 }
 
 variable "data_backend" {
-default = "cloudsql"
+  default = "cloudsql"
 }
 
 variable "storage_bucket" {
@@ -133,9 +133,9 @@ variable "source_image" {
 
 
 variable "instance_group_name" {
-default = "bookshelf-app-mig"   
+  default = "bookshelf-app-mig"
 }
- 
+
 /* variable "instance_network_ip" {
 default = ""
 }   
@@ -150,9 +150,9 @@ variable "network_interfaces" {
   }))
   default = [
     {
-      network       = "gcp-lab-network"
-      subnetwork    = "gcp-lab-backend-subnet"
-      network_ip    = ""
+      network    = "gcp-lab-network"
+      subnetwork = "gcp-lab-backend-subnet"
+      network_ip = ""
     },
   ]
 }
@@ -166,24 +166,24 @@ variable "named_ports" {
   }))
   default = [
     {
-      name       = "bookshelf-mig-named-port" 
-      port       = 8080
+      name = "bookshelf-mig-named-port"
+      port = 8080
     },
   ]
 }
 variable "healthcheck_self_link" {
-default = ""
+  default = ""
 }
 
 # Autoscaler
 #############
 variable "autoscaling_enabled" {
   description = "Creates an autoscaler for the managed instance group"
-#  default     = "false"
- default = "true"
+  #  default     = "false"
+  default = "true"
 }
 
-variable size {
+variable "size" {
   description = "Target size of the managed instance group."
   default     = 1
 }
@@ -199,15 +199,15 @@ variable "min_replicas" {
 
 variable "cooldown_period" {
   description = "The number of seconds that the autoscaler should wait before it starts collecting information from a new instance."
-#  default     = 60
+  #  default     = 60
   default = 180
-} 
+}
 #  Autoscaling/*  */
 #variable autoscaling {
 #  description = "Enable autoscaling."
 #  default     = true
 #}  
- 
+
 /*  variable "access_config" {
   description = "Access configurations, i.e. IPs via which the VM instance can be accessed via the Internet."
   type = list(object({

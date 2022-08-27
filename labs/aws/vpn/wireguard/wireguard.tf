@@ -139,7 +139,7 @@ variable "AWS_SSH_KEY" {}
 resource "aws_key_pair" "kp" {
   key_name   = "aws"
   public_key = var.AWS_SSH_KEY
-  
+
 }
 
 
@@ -171,26 +171,26 @@ resource "aws_instance" "bastion" {
     volume_type = "gp2"
   }
 
-vpc_security_group_ids = [aws_security_group.bastion-01-sg.id]
-key_name               = aws_key_pair.kp.key_name
+  vpc_security_group_ids = [aws_security_group.bastion-01-sg.id]
+  key_name               = aws_key_pair.kp.key_name
 
-# connection {
-#     user        = "ec2-user"
-#     private_key = "${tls_private_key.pk.private_key_pem}"
-#     agent       = false
-#     #host        = aws_instance.private_subnet.private_ip
-#     host        = aws_instance.bastion.public_ip
-#   }
+  # connection {
+  #     user        = "ec2-user"
+  #     private_key = "${tls_private_key.pk.private_key_pem}"
+  #     agent       = false
+  #     #host        = aws_instance.private_subnet.private_ip
+  #     host        = aws_instance.bastion.public_ip
+  #   }
 
-#   provisioner "file" {
-#     source      = "config"
-#     destination = "/tmp/config"
-#   }
+  #   provisioner "file" {
+  #     source      = "config"
+  #     destination = "/tmp/config"
+  #   }
 
   tags = {
-    Name  = "bastion-01"
-    Stack = "dev"
-    Owner = "Petro Bogdan"
+    Name              = "bastion-01"
+    Stack             = "dev"
+    Owner             = "Petro Bogdan"
     ansible_hostgroup = "wireguard"
   }
 }

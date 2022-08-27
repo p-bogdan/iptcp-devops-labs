@@ -1,16 +1,16 @@
 /* variable "region" {
 } */
 
- variable "private_vpc_connection" {
- default = ""
-} 
+variable "private_vpc_connection" {
+  default = ""
+}
 
 variable "network_self_link" {
-default = ""
+  default = ""
 }
 
 variable "region" {
-default = ""
+  default = ""
 }
 variable "user_name" {
   description = "The name of the default user"
@@ -23,7 +23,7 @@ variable "user_host" {
   default     = "%"
 }
 
- variable "sql_user_password" {
+variable "sql_user_password" {
   description = "The password for the default user. If not set, a random one will be generated and available in the generated_user_password output variable."
   type        = string
   default     = ""

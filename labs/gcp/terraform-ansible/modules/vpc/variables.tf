@@ -1,14 +1,14 @@
 
 variable "project" {
-default = "gcp-training-iptcp"
+  default = "gcp-training-iptcp"
 }
 variable "region" {
-default = "europe-west1"
+  default = "europe-west1"
 }
 
 variable "network_name" {
-description = "custom network name for gcp lab"
-default = "gcp-lab-network"
+  description = "custom network name for gcp lab"
+  default     = "gcp-lab-network"
 }
 
 variable "auto_create_subnetworks" {
@@ -17,9 +17,9 @@ variable "auto_create_subnetworks" {
   default     = false
 }
 variable "routing_mode" {
-  type        = string
-#  default     = "REGIONAL"
-  default     = "" 
+  type = string
+  #  default     = "REGIONAL"
+  default     = ""
   description = "The network routing mode (default 'GLOBAL')"
 }
 variable "delete_default_internet_gateway_routes" {
@@ -28,8 +28,8 @@ variable "delete_default_internet_gateway_routes" {
   default     = false
 }
 variable "ipv4_range_backends" {
-#default = "10.132.0.0/20"
-default = "10.132.1.0/24"
+  #default = "10.132.0.0/20"
+  default = "10.132.1.0/24"
 }
 /* variable "ipv4_range_proxy_subnet" {
 #default = "10.132.0.0/20"
@@ -41,17 +41,17 @@ description = "Fill up output proxy subnet range value"
 default     = ""    
 } */
 variable "source_ranges_backends" {
-type        = list(string)
-description = "List of CIDR block ranges"
-#default     = ["0.0.0.0/0"]
-default     = ["0.0.0.0/0"]
+  type        = list(string)
+  description = "List of CIDR block ranges"
+  #default     = ["0.0.0.0/0"]
+  default = ["0.0.0.0/0"]
 }
 
 variable "healthcheck_subnet_range" {
-type        = list(string)
-description = "List of CIDR block ranges"
-#default     = ["0.0.0.0/0"]
-default     = ["130.211.0.0/22", "35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
+  type        = list(string)
+  description = "List of CIDR block ranges"
+  #default     = ["0.0.0.0/0"]
+  default = ["130.211.0.0/22", "35.191.0.0/16", "209.85.152.0/22", "209.85.204.0/22"]
 }
 
 
@@ -60,7 +60,7 @@ default = ""
 } */
 
 variable "target-http-proxy_id" {
-default = ""    
+  default = ""
 }
 
 /* variable "proxy-subnet-id" {
