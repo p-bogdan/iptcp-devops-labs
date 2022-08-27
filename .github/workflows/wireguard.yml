@@ -115,7 +115,7 @@ jobs:
       - name: Deploy APIService
         uses: dawidd6/action-ansible-playbook@v2
         with:
-          playbook: ansible/playbook.yml
+          playbook: playbook.yml
           #directory: ./
           key: ${{secrets.LAB_SSH_PRIV}}
           inventory: |
