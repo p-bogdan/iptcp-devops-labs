@@ -58,6 +58,9 @@ jobs:
       - name: Terraform apply
         run: |
           terraform apply -auto-approve -input=false -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
+      - name: Terraform output
+        run: |
+          terraform output -json |jq --raw-output '.[].value'
   ansible_lint:
     name: Provisioning ansible infra part
     needs: wireguard
