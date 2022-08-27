@@ -1,6 +1,6 @@
 ---
 - name: install Docker
-  hosts: 3.81.229.182
+  hosts: ansible_hostgroup
   become: true
   vars:
     docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
@@ -15,4 +15,4 @@
           - docker       
         state: latest
         update_cache: yes
-      when: ansible_os_family == "Redhat"
+      #when: ansible_os_family == "Redhat"

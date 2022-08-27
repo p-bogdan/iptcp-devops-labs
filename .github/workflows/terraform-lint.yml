@@ -1,0 +1,17 @@
+---
+name: terraform-lint
+
+on: [push, pull_request]
+
+defaults:
+ run:
+   working-directory: ./labs
+
+jobs:
+  delivery:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@master
+      - name: Lint Terraform
+        uses: actionshub/terraform-lint@main
