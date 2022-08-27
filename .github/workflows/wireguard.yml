@@ -64,13 +64,13 @@ jobs:
       #- name: Install jq
       #  run: jq --version
       # terraform output -json |jq --raw-output '.[].value'
-      #- name: IP output
-      #  id: ip_output
-      #  run: |
-      #    echo "IP=$(terraform output -raw bastion_public_ip)"
-      #    echo "::set-output name=ip_output::${IP}"
-    #outputs:
-    #  ip_output: ${{ steps.ip_output.outputs.IP }}
+      - name: IP output
+        id: ip_output
+        run: |
+          echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
+          echo "::set-output name=ip_output::${IP}"
+    outputs:
+      ip_output: ${{ steps.ip_output.outputs.IP }}
           
           
   ansible_lint:
@@ -120,21 +120,21 @@ jobs:
       #- name: Initialize Terraform
       #  run: |
       #    terraform init -input=false
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: us-east-1
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Run terraform output
+      #- name: Configure AWS Credentials
+      #  uses: aws-actions/configure-aws-credentials@v1
+      #  with:
+      #    aws-region: us-east-1
+      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #- name: Run terraform output
         #uses: hashicorp/setup-terraform@v2
-        working-directory: ./labs/aws/vpn/wireguard
-        run: |
-           terraform init
-           echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
+      #  working-directory: ./labs/aws/vpn/wireguard
+      #  run: |
+      #     terraform init
+      #     echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
       - name: Check if we can use IP var
         run: |
-          echo "${{ env. IP }}"
+          echo "${{ needs.wireguard.ip_output.outputs.ip_output }}"
           ls -al    
       #- name: Deploy APIService
       #  uses: dawidd6/action-ansible-playbook@v2
