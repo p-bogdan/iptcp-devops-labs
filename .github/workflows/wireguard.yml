@@ -109,8 +109,8 @@ jobs:
       #  run: |
       #    echo "IP=$(terraform output -raw bastion_public_ip)"
       #echo "${{ env.IP }}"
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
+      - name: Run terraform output
+        #uses: hashicorp/setup-terraform@v2
         run: |
            echo "IP=$(terraform output -raw bastion_public_ip)"
       - name: Check if we can use IP var
