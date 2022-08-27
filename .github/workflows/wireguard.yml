@@ -38,7 +38,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.2.7
+          terraform_version: 1.2.8
           
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -58,22 +58,46 @@ jobs:
       - name: Terraform apply
         run: |
           terraform apply -auto-approve -input=false -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
-  ansible_provision:
+  ansible_lint:
     name: Provisioning ansible infra part
     needs: wireguard
     runs-on: ubuntu-22.04
-    defaults:
-      run:
-        working-directory: ./labs/aws/vpn/wireguard/ansible
+    #defaults:
+    #  run:
+    #    working-directory: ./labs/aws/vpn/wireguard/ansible
     steps:
       - name: Lint Ansible Playbook
         #uses: ansible/ansible-lint-action@main
         uses: ansible-community/ansible-lint-action@v6.3.0
         with:
-          targets: "ansible"
-      - name: Run playbook
+          targets: "./labs/aws/vpn/wireguard/ansible"
+
+  run_playbook:
+    name: Run ansible playbok
+    needs: ansible_lint
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        working-directory: ./labs/aws/vpn/wireguard/ansible
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip' # caching pip dependencies
+      - name: Install Ansible deps
         run: |
-          ansible-playbook -i inventory playbook.yml
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
+      - name: write inventory to file
+        env:
+          INVENTORY: ${{ secrets.ANSIBLE_INVENTORY }}
+        run: 'echo "$ANSIBLE_INVENTORY" > inventory'
+      - name: run playbook
+        run: |
+          ansible-playbook -i inventory ./labs/aws/vpn/wireguard/ansible/playbook.yml
   
   # deployAnsible:
   #   needs: ansible_lint
