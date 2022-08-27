@@ -63,9 +63,9 @@ jobs:
       #- name: Install jq
       #  run: jq --version
       # terraform output -json |jq --raw-output '.[].value'
-      #- name: Terraform ip output
-      #  run: |
-      #    terraform output -raw bastion_public_ip
+      - name: IP output
+        run: |
+          echo "IP=$(terraform output -raw bastion_public_ip)"
           
           
   ansible_lint:
@@ -101,9 +101,9 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
-      - name: Ip to connect
-        run: |
-          echo "IP=$(terraform output -raw bastion_public_ip)"          
+      #- name: Ip to connect
+      #  run: |
+      #    echo "IP=$(terraform output -raw bastion_public_ip)"          
       - name: Deploy APIService
         uses: dawidd6/action-ansible-playbook@v2
         with:
