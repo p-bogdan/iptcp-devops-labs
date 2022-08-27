@@ -105,7 +105,8 @@ jobs:
           cache: 'pip' # caching pip dependencies
       - name: Install Ansible deps
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
       #- name: Check if we can use IP var
       #  run: |
       #    echo ${{needs.wireguard.outputs.ip_output}}
