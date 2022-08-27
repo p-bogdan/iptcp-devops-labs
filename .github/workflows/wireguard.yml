@@ -73,7 +73,7 @@ jobs:
           targets: "ansible"
       - name: Run playbook
         run: |
-          ansible-playbook -i inventory ansible/playbook.yml
+          ansible-playbook -i inventory playbook.yml
   
   # deployAnsible:
   #   needs: ansible_lint
