@@ -2,13 +2,17 @@
 - name: install Docker
   hosts: all
   become: true
+  vars:
+    docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
   tasks:
-    - name: Install apt-transport-https
-      ansible.builtin.apt:
+    - name: Add Docker repo
+      get_url:
+        url: "{{ docker_repo }}"
+        dest: /etc/yum.repos.d/docer-ce.repo
+    - name: Install or update needed software
+      package: 
         name:
-          - apt-transport-https
-          - ca-certificates
-          - lsb-release
-          - gnupg
+          - docker       
         state: latest
-        update_cache: true
+        update_cache: yes
+      when: ansible_os_family == "Redhat"
