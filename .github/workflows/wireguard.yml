@@ -108,7 +108,7 @@ jobs:
       - name: Check if we can use IP var
         run: |
           echo "${{ env.IP }}"
-          echo "${{ needs.wireguard.ip_output }}""
+          echo "${{ needs.wireguard.ip_output }}"
           ls -al    
       #- name: Deploy APIService
       #  uses: dawidd6/action-ansible-playbook@v2
