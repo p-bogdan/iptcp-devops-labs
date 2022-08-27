@@ -1,6 +1,6 @@
 ---
 - name: install Docker
-  hosts: ansible_hostgroup
+  hosts: all
   become: true
   vars:
     docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
@@ -8,7 +8,7 @@
     - name: Add Docker repo
       get_url:
         url: "{{ docker_repo }}"
-        dest: /etc/yum.repos.d/docer-ce.repo
+        dest: /etc/yum.repos.d/docker-ce.repo
     - name: Install or update needed software
       package: 
         name:

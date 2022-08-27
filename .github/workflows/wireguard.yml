@@ -63,9 +63,9 @@ jobs:
       #- name: Install jq
       #  run: jq --version
       # terraform output -json |jq --raw-output '.[].value'
-      - name: Terraform ip output
-        run: |
-          terraform output -raw bastion_public_ip
+      #- name: Terraform ip output
+      #  run: |
+      #    terraform output -raw bastion_public_ip
           
           
   ansible_lint:
@@ -101,22 +101,20 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
-      - name: write inventory to file
-        env:
-          INVENTORY: ${{ secrets.ANSIBLE_INVENTORY }}
-        run: 'echo "$ANSIBLE_INVENTORY" > inventory'
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.LAB_SSH }}
-          name: wireguard # optional
-          #known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          known_hosts: unnecessary
-          # config: ${{ secrets.CONFIG }} # ssh_config; optional
-          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
-      - name: run playbook
+      - name: Ip to connect
         run: |
-          ansible-playbook -i inventory playbook.yml
+          echo "IP=$(terraform output -raw bastion_public_ip)"          
+      - name: Deploy APIService
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: playbook.yml
+          directory: ./
+          key: ${{secrets.LAB_SSH_PRIV}}
+          inventory: |
+            [all]
+            ${{ env.IP }}
+          options: |
+            --verbose
         
         #run: |
         #  ls -al
