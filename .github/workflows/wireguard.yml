@@ -106,7 +106,7 @@ jobs:
       - name: Install Ansible deps
         run: |
           pip3 install --upgrade pip
-          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+          pip3 install -r requirements.txt
           
       #- name: Check if we can use IP var
       #  run: |
