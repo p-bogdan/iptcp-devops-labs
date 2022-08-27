@@ -68,7 +68,7 @@ jobs:
         id: ip_output
         run: |
           echo "IP=$(terraform output -raw bastion_public_ip)" >> $GITHUB_ENV
-          echo "::set-output name=ip_output::terraform output -raw bastion_public_ip"
+          echo "::set-output name=ip_output::hello"
     outputs:
       ip_output: ${{ steps.ip_output.outputs.IP }}
           
