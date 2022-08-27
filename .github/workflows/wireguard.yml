@@ -120,7 +120,7 @@ jobs:
           key: ${{secrets.LAB_SSH_PRIV}}
           inventory: |
             [wireguard]
-            ${{ needs.wireguard.outputs.ip_output }} ansible_ssh_private_key_file=${{secrets.LAB_SSH_PRIV}} ansible_connection=ssh
+            ${{needs.wireguard.outputs.ip_output}} ansible_ssh_private_key_file=${{secrets.LAB_SSH_PRIV}} ansible_host=${{needs.wireguard.outputs.ip_output}} ansible_connection=ssh
           known_hosts: .known_hosts
           options: |
             --limit wireguard
