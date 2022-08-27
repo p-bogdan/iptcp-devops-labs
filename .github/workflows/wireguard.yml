@@ -14,6 +14,7 @@ on:
 env:
   AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
 
+
 #defaults:
 # run:
 #   shell: bash
@@ -109,20 +110,20 @@ jobs:
       #  run: |
       #    echo "IP=$(terraform output -raw bastion_public_ip)"
       #echo "${{ env.IP }}"
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: us-east-1
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #- name: Configure AWS Credentials
+      #  uses: aws-actions/configure-aws-credentials@v1
+      #  with:
+      #    aws-region: us-east-1
+      #    aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #    aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Initialize Terraform
-        run: |
-          terraform init -input=false
+      #- name: Initialize Terraform
+      #  run: |
+      #    terraform init -input=false
       - name: Run terraform output
         #uses: hashicorp/setup-terraform@v2
+        working-directory: ./labs/aws/vpn/wireguard
         run: |
-           terraform init
            echo "IP=$(terraform output -raw bastion_public_ip)"
       - name: Check if we can use IP var
         run: |
