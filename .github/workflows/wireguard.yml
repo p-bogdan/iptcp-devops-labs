@@ -103,18 +103,22 @@ jobs:
           if [ -f test-requirements.txt ]; then pip install -r test-requirements.txt; fi
       #- name: Ip to connect
       #  run: |
-      #    echo "IP=$(terraform output -raw bastion_public_ip)"          
-      - name: Deploy APIService
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: playbook.yml
-          directory: ./
-          key: ${{secrets.LAB_SSH_PRIV}}
-          inventory: |
-            [all]
-            ${{ env.IP }}
-          options: |
-            --verbose
+      #    echo "IP=$(terraform output -raw bastion_public_ip)"
+      - name: Check if we can use IP var
+        run: |
+          echo "${{ env.IP }}"
+          ls -al    
+      #- name: Deploy APIService
+      #  uses: dawidd6/action-ansible-playbook@v2
+      #  with:
+      #    playbook: playbook.yml
+      #    directory: ./
+      #    key: ${{secrets.LAB_SSH_PRIV}}
+      #    inventory: |
+      #      [all]
+      #      ${{ env.IP }}
+      #    options: |
+      #      --verbose
         
         #run: |
         #  ls -al
