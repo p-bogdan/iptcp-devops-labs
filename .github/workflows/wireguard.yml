@@ -105,8 +105,8 @@ jobs:
           cache: 'pip' # caching pip dependencies
       - name: Install Ansible deps
         run: |
-          python -m pip3 install --upgrade pip
-          if [ -f requirements.txt ]; then python -m pip3 install -r requirements.txt; fi
+          pip3 install --upgrade pip
+          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
           
       #- name: Check if we can use IP var
       #  run: |
