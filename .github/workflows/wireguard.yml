@@ -114,7 +114,7 @@ jobs:
       #    ls -al
       - name: Verifying ansible inventory invoking
         run: |
-          echo ${ANSIBLE_INVENTORY}
+          echo ${{ secrets.ANSIBLE_INVENTORY }}
       # - name: Deploy APIService
       #   uses: dawidd6/action-ansible-playbook@v2
       #   with:
