@@ -111,21 +111,24 @@ jobs:
       #- name: Check if we can use IP var
       #  run: |
       #    echo ${{needs.wireguard.outputs.ip_output}}
-      #    ls -al    
-      - name: Deploy APIService
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: playbook.yml
-          directory: ./labs/aws/vpn/wireguard/ansible
-          key: ${{secrets.LAB_SSH_PRIV}}
-          inventory: |
-            [wireguard]
-            ${{needs.wireguard.outputs.ip_output}} ansible_ssh_port=22 ansible_ssh_user=ec2-user ansible_become_user=root 
-          known_hosts: .known_hosts
-          options: |
-            --limit wireguard
-            --inventory .hosts
-            --verbose
+      #    ls -al
+      - name: Verifying ansible inventory invoking
+        run: |
+          echo ${ANSIBLE_INVENTORY}
+      # - name: Deploy APIService
+      #   uses: dawidd6/action-ansible-playbook@v2
+      #   with:
+      #     playbook: playbook.yml
+      #     directory: ./labs/aws/vpn/wireguard/ansible
+      #     key: ${{secrets.LAB_SSH_PRIV}}
+      #     inventory: |
+      #       [wireguard]
+      #       ${{needs.wireguard.outputs.ip_output}} ansible_ssh_port=22 ansible_ssh_user=ec2-user ansible_become_user=root 
+      #     known_hosts: .known_hosts
+      #     options: |
+      #       --limit wireguard
+      #       --inventory .hosts
+      #       --verbose
         
         #run: |
         #  ls -al
