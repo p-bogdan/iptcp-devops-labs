@@ -88,6 +88,14 @@ jobs:
         uses: ansible-community/ansible-lint-action@v6.3.0
         with:
           targets: "./labs/aws/vpn/wireguard/ansible"
+      - name: Public IP
+        id: ip
+        uses: haythem/public-ip@v1.2
+
+      - name: Print Public IP
+        run: |
+          echo ${{ steps.ip.outputs.ipv4 }}
+          echo ${{ steps.ip.outputs.ipv6 }}
 
   run_playbook:
     name: Run ansible playbok
