@@ -156,7 +156,6 @@ resource "aws_instance" "bastion" {
   user_data                            = <<EOF
 		#!/bin/bash
     yum install -y tree 
-    amazon-linux-extras install -y epel
 	EOF
   root_block_device {
     #device_name           = "/dev/xvda"

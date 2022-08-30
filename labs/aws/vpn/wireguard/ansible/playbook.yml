@@ -10,7 +10,11 @@
       package: 
         name:
           - docker
-          - docker-compose   
         state: latest
         update_cache: yes
-      when: ansible_distribution == "Amazon"
+      when: ansible_distribution == "Amazon
+    - name: Install docker-compose package
+      get_url:
+        url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
