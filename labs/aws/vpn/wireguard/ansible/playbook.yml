@@ -13,4 +13,4 @@
           - docker-compose   
         state: latest
         update_cache: yes
-      when: ansible_os_family == "Redhat"
+      when: ansible_distribution == "Amazon"
