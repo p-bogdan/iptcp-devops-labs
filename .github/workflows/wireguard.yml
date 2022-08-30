@@ -128,7 +128,6 @@ jobs:
           known_hosts: .known_hosts
           options: |
             --limit wireguard
-            --inventory .hosts
             --verbose
         
         #run: |

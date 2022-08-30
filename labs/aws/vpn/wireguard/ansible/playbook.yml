@@ -3,16 +3,14 @@
   hosts: wireguard
   become: true
   vars:
-    docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
+    #docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
-    - name: Add Docker repo
-      get_url:
-        url: "{{ docker_repo }}"
-        dest: /etc/yum.repos.d/docker-ce.repo
     - name: Install or update needed software
       package: 
         name:
-          - docker       
+          - docker
+          - docker-compose   
         state: latest
         update_cache: yes
-      #when: ansible_os_family == "Redhat"
+      when: ansible_os_family == "Redhat"
