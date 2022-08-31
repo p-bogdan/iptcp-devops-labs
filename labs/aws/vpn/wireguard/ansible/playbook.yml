@@ -20,3 +20,11 @@
         mode: 'u+x,g+x'
         owner: ec2-user
         group: ec2-user
+    - name: Adding user to run docker commands without sudo
+      user:
+        name: "{{ item }}"
+        append: yes
+        groups: docker
+      become: true
+      loop:
+        - ec2-user
