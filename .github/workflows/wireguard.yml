@@ -116,7 +116,7 @@ jobs:
       #- name: Verifying ansible inventory invoking
       #  run: |
       #    echo ${{ secrets.ANSIBLE_INVENTORY }}
-      - name: Deploy APIService
+      - name: Deploy Wireguard automation
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: playbook.yml
