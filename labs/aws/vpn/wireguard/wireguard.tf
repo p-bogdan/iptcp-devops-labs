@@ -155,7 +155,7 @@ resource "aws_instance" "bastion" {
   instance_initiated_shutdown_behavior = "terminate"
   user_data                            = <<EOF
 		#!/bin/bash
-    yum install -y tree 
+    yum install -y tree vim
 	EOF
   root_block_device {
     #device_name           = "/dev/xvda"
