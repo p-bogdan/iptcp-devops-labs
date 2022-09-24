@@ -24,14 +24,18 @@ jobs:
 
   wireguard:
     name: Wireguard infra provisioning
-    runs-on: ubuntu-22.04   
+    runs-on: ubuntu-22.04
+    if: ${{ github.actor == 'dependabot[bot]' || github.actor == 'p-bogdan' }}
     defaults:
       run:
         working-directory: ./labs/aws/vpn/wireguard
     permissions:
       packages: write
-      contents: read
+      #contents: read
       id-token: write
+      #Expanding perms for dependabot
+      contents: write
+      pull-requests: write
       #
     steps:   
       - name: Check out code
@@ -53,7 +57,6 @@ jobs:
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Initialize Terraform
         run: |
-          echo ${{ github.actor }}
           terraform init -input=false
       - name: Terraform Validate
         run: |
