@@ -26,6 +26,11 @@ jobs:
   wireguard:
     name: Wireguard destroy infra
     runs-on: ubuntu-22.04
+    if: ${{ github.actor == 'dependabot[bot]' || github.actor == 'p-bogdan' }}
+    permissions:
+      #Expanding perms for dependabot
+      contents: write
+      pull-requests: write
     steps:
       - name: Check out code
         uses: actions/checkout@v3
