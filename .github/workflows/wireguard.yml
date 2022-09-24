@@ -95,7 +95,7 @@ jobs:
     steps:
       - name: Lint Ansible Playbook
         #uses: ansible/ansible-lint-action@main
-        uses: ansible-community/ansible-lint-action@v6.3.0
+        uses: ansible-community/ansible-lint-action@v6.6.1
         with:
           targets: "./labs/aws/vpn/wireguard/ansible"
 
