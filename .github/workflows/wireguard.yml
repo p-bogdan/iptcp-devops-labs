@@ -21,29 +21,10 @@ env:
 #   working-directory: ./labs/aws/vpn/wireguard  
 
 jobs:
-  dependabot:
-    name: Dependabot auto PR
-    runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' }}
-    permissions:
-       pull-requests: write
-       contents: write
-    steps:
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1.1.1
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Enable auto-merge for Dependabot PRs
-        if: ${{contains(steps.metadata.outputs.dependency-names, 'my-dependency') && steps.metadata.outputs.update-type == 'version-update:semver-patch'}}
-        run: gh pr merge --auto --merge "$PR_URL"
-        env:
-          PR_URL: ${{github.event.pull_request.html_url}}
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
   wireguard:
     name: Wireguard infra provisioning
-    runs-on: ubuntu-22.04
-    
+    runs-on: ubuntu-22.04   
     defaults:
       run:
         working-directory: ./labs/aws/vpn/wireguard
@@ -52,11 +33,9 @@ jobs:
       contents: read
       id-token: write
       #
-    steps:
-      
+    steps:   
       - name: Check out code
-        uses: actions/checkout@v3
-          
+        uses: actions/checkout@v3         
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
@@ -70,8 +49,11 @@ jobs:
           aws-region: us-east-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       - name: Initialize Terraform
         run: |
+          echo ${{ github.actor }}
           terraform init -input=false
       - name: Terraform Validate
         run: |
