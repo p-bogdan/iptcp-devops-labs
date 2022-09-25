@@ -28,3 +28,8 @@
       become: true
       loop:
         - ec2-user
+    - name: Deploy wireguard docker-compose stack
+      docker_compose:
+        project_src: ./
+        files:  
+        - docker-compose.yml
