@@ -28,8 +28,12 @@
       become: true
       loop:
         - ec2-user
+    - name: Create mount folder for wireguard
+      file:
+        path: /opt/wireguard
+        state: directory
     - name: Deploy wireguard docker-compose stack
-      docker_compose:
+      community.docker.docker_compose:
         project_src: ./
         files:  
           - docker-compose.yml
