@@ -13,6 +13,11 @@
         state: present
         update_cache: yes
       when: ansible_distribution == "Amazon"
+    - name: Install collection community.network
+      ansible_galaxy_install:
+        type: collection
+        name: community.docker:3.1.0
+
     - name: Install docker-compose package
       get_url:
         url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
