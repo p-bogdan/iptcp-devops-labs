@@ -38,7 +38,7 @@
         path: /opt/wireguard
         state: directory
     - name: Deploy wireguard docker-compose stack
-      docker_compose:
+      community.general.docker_compose:
         project_name: wireguard
         project_src: .
         files:  
