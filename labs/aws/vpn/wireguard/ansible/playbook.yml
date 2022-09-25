@@ -1,6 +1,8 @@
 ---
 - name: install Docker
   hosts: wireguard
+  collections:
+    - community.docker:3.1.0
   become: true
   vars:
     #docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
@@ -13,9 +15,9 @@
         state: present
         update_cache: yes
       when: ansible_distribution == "Amazon"
-    - name: Install collection community.network
-      collections:
-        - community.docker:3.1.0
+    #- name: Install collection community.network
+    #  collections:
+    #    - community.docker:3.1.0
     - name: Install docker-compose package
       get_url:
         url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
