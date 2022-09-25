@@ -2,7 +2,7 @@
 - name: install Docker
   hosts: wireguard
   collections:
-    - community.docker:3.1.0
+    - community.docker
   become: true
   vars:
     #docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
