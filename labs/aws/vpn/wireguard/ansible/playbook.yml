@@ -1,13 +1,16 @@
 ---
 - name: install Docker
   hosts: wireguard
-  #collections:
-  #  - community.docker
+  collections:
+    - community.docker
   become: true
   vars:
     #docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
     ansible_python_interpreter: /usr/bin/python3
   tasks:
+    - name: Check if docker collection was installed
+      command:
+        cmd: ansible-galaxy collection list
     - name: Install or update needed software
       package: 
         name:

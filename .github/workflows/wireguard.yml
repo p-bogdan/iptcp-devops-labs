@@ -117,8 +117,6 @@ jobs:
         run: |
           pip3 install --upgrade pip
           if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
-          ansible-galaxy collection install community.docker
-          ansible-galaxy collection list
           
       #- name: Check if we can use IP var
       #  run: |
