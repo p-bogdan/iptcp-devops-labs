@@ -1,5 +1,4 @@
-#ansible-core==2.13.4
-ansible==2.10.7
+ansible-core==2.13.4
 ansible-lint==6.7.0
 jsondiff==2.0.0
 passlib==1.7.4
