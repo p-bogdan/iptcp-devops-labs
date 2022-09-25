@@ -1,6 +1,7 @@
 ---
 - name: install Docker
   hosts: wireguard
+  gather_facts: true
   #collections:
   #  - community.docker
   become: true
