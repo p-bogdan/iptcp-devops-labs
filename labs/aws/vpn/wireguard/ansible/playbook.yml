@@ -11,7 +11,7 @@
     - name: Install or update needed software
       package: 
         name:
-          - docker
+          #- docker
           - python3-requests
           - python3-docker
         state: present
