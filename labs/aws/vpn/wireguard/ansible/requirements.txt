@@ -3,3 +3,4 @@ ansible-lint==6.7.0
 jsondiff==2.0.0
 passlib==1.7.4
 PyYAML==6.0
+docker==6.0.0
