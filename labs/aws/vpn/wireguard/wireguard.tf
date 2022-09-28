@@ -160,16 +160,16 @@ resource "aws_instance" "bastion" {
   root_block_device {
     #device_name           = "/dev/xvda"
     volume_size = 20
-    volume_type = "gp2"
+    volume_type = "standard"
 
   }
   ebs_block_device {
     delete_on_termination = false
     device_name           = "/dev/sdb"
 
-    volume_size = 40
+    volume_size = 20
     #volume_type = "gp2"
-    volume_type = "st1"
+    volume_type = "standard"
   }
 
   vpc_security_group_ids = [aws_security_group.bastion-01-sg.id]
