@@ -131,7 +131,8 @@ data "aws_ami" "amazon-linux-2" {
   filter {
     name   = "name"
     #values = ["amzn2-ami-hvm*"] #kernel 4.14
-    values = ["amzn2-ami-kernel*"] #kernel 5.10
+    #values = ["amzn2-ami-kernel*"] #kernel 5.10
+    values = ["al2022*"] #amazon linux 2022
   }
 }
 
@@ -196,9 +197,9 @@ resource "aws_instance" "bastion" {
   }
 }
 
-data "http" "myip" {
-  url = "http://ipv4.icanhazip.com"
-}
+# data "http" "myip" {
+#   url = "http://ipv4.icanhazip.com"
+# }
 
 resource "aws_security_group" "bastion-01-sg" {
   name        = "bastion-01-sg"
