@@ -13,22 +13,22 @@ locals {
       availability_zone = "us-east-1a"
     },
   }
-  nat_gateways = {
-    public_gw1 = {
-      name = "my-dev-01-natgw-a"
-      #subnet  = "${aws_subnet.public_subnets["az_a"]}"
-      subnet        = "${aws_subnet.public_subnets["az_a"].id}"
-      allocation_id = "${aws_eip.default[0].id}"
-    },
-  }
+  # nat_gateways = {
+  #   public_gw1 = {
+  #     name = "my-dev-01-natgw-a"
+  #     #subnet  = "${aws_subnet.public_subnets["az_a"]}"
+  #     subnet        = "${aws_subnet.public_subnets["az_a"].id}"
+  #     allocation_id = "${aws_eip.default[0].id}"
+  #   },
+  # }
 
-  routes_private = {
-    rt1_priv = {
-      cidr_block     = "0.0.0.0/0"
-      nat_gateway_id = "${aws_nat_gateway.public_subnets["public_gw1"].id}"
-      name           = "my-dev-01-sub-priv-a"
-    },
-  }
+  # routes_private = {
+  #   rt1_priv = {
+  #     cidr_block     = "0.0.0.0/0"
+  #     nat_gateway_id = "${aws_nat_gateway.public_subnets["public_gw1"].id}"
+  #     name           = "my-dev-01-sub-priv-a"
+  #   },
+  # }
 }
 
 resource "aws_vpc" "my-vpc-01" {
@@ -53,15 +53,15 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
-resource "aws_subnet" "private_subnets" {
-  for_each          = local.private_subnets
-  vpc_id            = aws_vpc.my-vpc-01.id
-  cidr_block        = each.value.cidr_block
-  availability_zone = each.value.availability_zone
-  tags = {
-    Name = "${each.value.name}"
-  }
-}
+# resource "aws_subnet" "private_subnets" {
+#   for_each          = local.private_subnets
+#   vpc_id            = aws_vpc.my-vpc-01.id
+#   cidr_block        = each.value.cidr_block
+#   availability_zone = each.value.availability_zone
+#   tags = {
+#     Name = "${each.value.name}"
+#   }
+# }
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.my-vpc-01.id
@@ -80,37 +80,37 @@ resource "aws_route_table" "int_gw" {
   }
 }
 
-resource "aws_route_table" "private" {
-  vpc_id   = aws_vpc.my-vpc-01.id
-  for_each = local.routes_private
-  route {
-    cidr_block = each.value.cidr_block
-    gateway_id = each.value.nat_gateway_id
-  }
-  tags = {
-    Name = "${each.value.name}"
-  }
+# resource "aws_route_table" "private" {
+#   vpc_id   = aws_vpc.my-vpc-01.id
+#   for_each = local.routes_private
+#   route {
+#     cidr_block = each.value.cidr_block
+#     gateway_id = each.value.nat_gateway_id
+#   }
+#   tags = {
+#     Name = "${each.value.name}"
+#   }
 
-}
+# }
 
 resource "aws_eip" "default" {
   count      = 3
   depends_on = [aws_internet_gateway.gw]
 }
 
-resource "aws_nat_gateway" "public_subnets" {
-  for_each      = local.nat_gateways
-  subnet_id     = each.value.subnet
-  allocation_id = each.value.allocation_id
-  //connectivity_type default public
-  tags = {
-    Name = "${each.value.name}"
-  }
+# resource "aws_nat_gateway" "public_subnets" {
+#   for_each      = local.nat_gateways
+#   subnet_id     = each.value.subnet
+#   allocation_id = each.value.allocation_id
+#   //connectivity_type default public
+#   tags = {
+#     Name = "${each.value.name}"
+#   }
 
-  # To ensure proper ordering, it is recommended to add an explicit dependency
-  # on the Internet Gateway for the VPC.
-  depends_on = [aws_internet_gateway.gw]
-}
+#   # To ensure proper ordering, it is recommended to add an explicit dependency
+#   # on the Internet Gateway for the VPC.
+#   depends_on = [aws_internet_gateway.gw]
+# }
 
 resource "aws_route_table_association" "public_subnets" {
   for_each       = aws_subnet.public_subnets
@@ -168,7 +168,8 @@ resource "aws_instance" "bastion" {
     device_name           = "/dev/sdb"
 
     volume_size = 40
-    volume_type = "gp2"
+    #volume_type = "gp2"
+    volume_type = "st1"
   }
 
   vpc_security_group_ids = [aws_security_group.bastion-01-sg.id]
