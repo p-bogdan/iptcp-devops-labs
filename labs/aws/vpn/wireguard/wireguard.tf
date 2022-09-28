@@ -94,7 +94,7 @@ resource "aws_route_table" "int_gw" {
 # }
 
 resource "aws_eip" "default" {
-  count      = 3
+  count      = 1
   depends_on = [aws_internet_gateway.gw]
 }
 
