@@ -41,11 +41,6 @@
       file:
         path: /opt/wireguard
         state: directory
-    - name: install the package, force upgrade
-      pip:
-        name: pip
-        executable: pip3
-        state: latest
     - name: Check file location
       command: ls -alR
     # - name: copy requirements.txt to remote host
