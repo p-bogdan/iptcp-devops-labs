@@ -41,9 +41,26 @@
       file:
         path: /opt/wireguard
         state: directory
+    - name: install the package, force upgrade
+      pip:
+        name: pip
+        executable: pip3
+        state: latest
+    - name: Check file location
+      command: ls -alR
+    # - name: copy requirements.txt to remote host
+    #   copy:
+    #     src: /mine/ntp.conf
+    #     dest: /etc/ntp.conf
+    #     owner: root
+    #     group: root
+    #     mode: '0644'
+    #     backup: yes
     - name: Install specified python requirements
       pip:
         requirements: requirements.txt
+    - name: Install ansible docker collection
+      command: ansible-galaxy collection install community.docker && ansible-galaxy collection list
 
   
     - name: Deploy wireguard docker-compose stack
