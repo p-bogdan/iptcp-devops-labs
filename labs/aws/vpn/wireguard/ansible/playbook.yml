@@ -13,6 +13,7 @@
         name:
           - docker
           - python3-requests
+          - python3-pip
           #- python3-docker
         state: present
         update_cache: yes
@@ -22,7 +23,8 @@
     #    - community.docker:3.1.0
     - name: Install docker-compose package
       get_url:
-        url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+        #url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+        url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
         dest: /usr/local/bin/docker-compose
         mode: 'u+x,g+x'
         owner: ec2-user
