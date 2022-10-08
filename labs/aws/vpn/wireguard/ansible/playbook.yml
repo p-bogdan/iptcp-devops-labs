@@ -11,8 +11,8 @@
     - name: Install or update needed software
       package: 
         name:
-          - docker
-          - python3-requests
+          #- docker
+          #- python3-requests
           - python3-pip
           #- python3-docker
         state: present
@@ -43,17 +43,16 @@
         state: directory
     - name: Check file location
       command: ls -alR
-    # - name: copy requirements.txt to remote host
-    #   copy:
-    #     src: /mine/ntp.conf
-    #     dest: /etc/ntp.conf
-    #     owner: root
-    #     group: root
-    #     mode: '0644'
-    #     backup: yes
     - name: Install specified python requirements
       pip:
-        requirements: requirements.txt
+        name:
+          - ansible-core==2.13.4
+          - ansible-lint==6.7.0
+          - jsondiff==2.0.0
+          - passlib==1.7.4
+          - PyYAML==6.0
+          - docker==6.0.0
+          - requests==2.28.1
     - name: Install ansible docker collection
       command: ansible-galaxy collection install community.docker && ansible-galaxy collection list
 
