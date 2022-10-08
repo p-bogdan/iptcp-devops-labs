@@ -41,6 +41,10 @@
       file:
         path: /opt/wireguard
         state: directory
+    - name: Install specified python requirements
+      pip:
+        requirements: requirements.txt
+
   
     - name: Deploy wireguard docker-compose stack
       docker_compose:

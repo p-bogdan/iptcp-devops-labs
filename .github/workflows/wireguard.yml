@@ -108,6 +108,17 @@ jobs:
         working-directory: ./labs/aws/vpn/wireguard/ansible
     steps:
       - uses: actions/checkout@v3
+      # - name: Set up Python 3.9
+      #   uses: actions/setup-python@v4
+      #   with:
+      #     python-version: '3.9'
+      #     cache: 'pip' # caching pip dependencies
+      # - name: Install Ansible deps
+      #   run: |
+      #     pip3 install --upgrade pip
+      #     if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+      #     ansible-galaxy collection install community.docker
+      #     ansible-galaxy collection list
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
@@ -116,7 +127,6 @@ jobs:
       - name: Install Ansible deps
         run: |
           pip3 install --upgrade pip
-          if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
           ansible-galaxy collection install community.docker
           ansible-galaxy collection list
           
