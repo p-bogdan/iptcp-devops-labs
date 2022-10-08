@@ -4,9 +4,9 @@
   #collections:
   #  - community.docker
   become: true
-  vars:
+  #vars:
     #docker_repo: https://download.docker.com/linux/centos/docker-ce.repo
-    ansible_python_interpreter: /usr/bin/python3
+    #ansible_python_interpreter: /usr/bin/python3
   tasks:
     - name: Install or update needed software
       package: 
