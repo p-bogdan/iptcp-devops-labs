@@ -33,7 +33,8 @@
       user:
         name: "{{ item }}"
         append: yes
-        groups: docker
+        #groups: docker
+        groups: ec2-user
       become: true
       loop:
         - ec2-user
