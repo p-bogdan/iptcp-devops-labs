@@ -12,7 +12,7 @@
       package: 
         name:
           #- docker
-          #- python3-requests
+          - python3-requests
           - python3-pip
           #- python3-docker
         state: present
@@ -21,22 +21,22 @@
     #- name: Install collection community.network
     #  collections:
     #    - community.docker:3.1.0
-    # - name: Install docker-compose package
-    #   get_url:
-    #     #url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
-    #     url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
-    #     dest: /usr/local/bin/docker-compose
-    #     mode: 'u+x,g+x'
-    #     owner: ec2-user
-    #     group: ec2-user
-    # - name: Adding user to run docker commands without sudo
-    #   user:
-    #     name: "{{ item }}"
-    #     append: yes
-    #     groups: docker
-    #   become: true
-    #   loop:
-    #     - ec2-user
+    - name: Install docker-compose package
+      get_url:
+        #url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}
+        url: https://github.com/docker/compose/releases/latest/download/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
+        owner: ec2-user
+        group: ec2-user
+    - name: Adding user to run docker commands without sudo
+      user:
+        name: "{{ item }}"
+        append: yes
+        groups: docker
+      become: true
+      loop:
+        - ec2-user
     - name: Create mount folder for wireguard
       file:
         path: /opt/wireguard
@@ -51,8 +51,8 @@
           - passlib==1.7.4
           - PyYAML==6.0
           - docker==6.0.0
-          - requests==2.28.1
-          - docker-compose==1.29.2
+          #- requests==2.28.1
+          #- docker-compose==1.29.2
     - name: Install ansible docker collection
       command: ansible-galaxy collection install community.docker && ansible-galaxy collection list
 
