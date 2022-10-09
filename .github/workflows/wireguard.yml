@@ -137,6 +137,15 @@ jobs:
       #- name: Verifying ansible inventory invoking
       #  run: |
       #    echo ${{ secrets.ANSIBLE_INVENTORY }}
+      - name: copy file via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{needs.wireguard.outputs.ip_output}}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{secrets.LAB_SSH_PRIV}}
+          port: ${{ secrets.SSH_PORT }}
+          source: "./labs/aws/vpn/wireguard/ansible/docker-compose.yml"
+          target: "/tmp"
       - name: Deploy Wireguard automation
         uses: dawidd6/action-ansible-playbook@v2
         with:
@@ -145,7 +154,7 @@ jobs:
           key: ${{secrets.LAB_SSH_PRIV}}
           inventory: |
            [wireguard]
-           ${{needs.wireguard.outputs.ip_output}} ansible_ssh_host=${{needs.wireguard.outputs.ip_output}} ansible_ssh_port=22 ansible_connection=ssh ansible_ssh_user=ec2-user ansible_become_user=root ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+           ${{needs.wireguard.outputs.ip_output}} ansible_ssh_host=${{needs.wireguard.outputs.ip_output}} ansible_ssh_port=${{ secrets.SSH_PORT }} ansible_connection=ssh ansible_ssh_user=${{ secrets.SSH_USERNAME }} ansible_become_user=root ansible_ssh_common_args='-o StrictHostKeyChecking=no'
           known_hosts: .known_hosts
           options: |
             --limit wireguard
