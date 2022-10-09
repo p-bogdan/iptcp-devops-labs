@@ -70,7 +70,7 @@
           #- requests==2.28.1
           #- docker-compose==1.29.2
     - name: Install ansible docker collection
-      command: ansible-galaxy collection install community.docker && ansible-galaxy collection list
+      command: ansible-galaxy collection install community.docker
 
   
     - name: Deploy wireguard docker-compose stack
