@@ -71,8 +71,11 @@
           #- docker-compose==1.29.2
     - name: Install ansible docker collection
       command: ansible-galaxy collection install community.docker
-
-  
+   
+    - name: Extract docker-compose config
+      unarchive:
+        src: /tmp/wireguard-compose.tar.gz
+        dest: /tmp
     - name: Deploy wireguard docker-compose stack
       docker_compose:
         project_name: wireguard
