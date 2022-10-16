@@ -112,6 +112,14 @@
     
     #- name: Deploy wireguard docker-compose stack
     #  command: docker-compose -f docker-compose.yml up -d
+
+    - name: Get AWS wireguard instance public ip
+      get_url:
+        url: http://checkip.amazonaws.com
+      register: public_ip
+        #mode: 'u+x,g+x'
+        #owner: ec2-user
+        #group: ec2-user
    
     - name: Deploy wireguard docker-compose stack
       #docker_compose:
