@@ -80,6 +80,6 @@
         project_name: wireguard
         #project_src: "/home/ec2-user/"
         files:
-          - docker-compose.yml
+          - /home/ec2-user/docker-compose.yml
         #files:  
         #  - docker-compose.yml
