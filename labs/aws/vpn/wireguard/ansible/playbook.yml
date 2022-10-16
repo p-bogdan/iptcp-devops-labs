@@ -74,20 +74,23 @@
     
     - name: Test path location
       command: cat docker-compose.yml
-   
+    
     - name: Deploy wireguard docker-compose stack
-      #docker_compose:
-      community.docker.docker_compose:
-        project_name: wireguard
-        #project_src: "/home/ec2-user/"
-        project_src: "/home/ec2-user/{{ item }}"
-        #project_src: "/home/ec2-user"
-        remove_orphans: yes
-        #files:
-        #- docker-compose.yml
-        state: present
-      loop:
-        - docker-compose.yml
-        #files:  
-        #  - docker-compose.yml
+      command: docker-compose -f docker-compose.yml up -d
+   
+    # - name: Deploy wireguard docker-compose stack
+    #   #docker_compose:
+    #   docker_compose:
+    #     project_name: wireguard
+    #     #project_src: "/home/ec2-user/"
+    #     project_src: "/home/ec2-user/{{ item }}"
+    #     #project_src: "/home/ec2-user"
+    #     remove_orphans: yes
+    #     #files:
+    #     #- docker-compose.yml
+    #     state: present
+    #   loop:
+    #     - docker-compose.yml
+    #     #files:  
+    #     #  - docker-compose.yml
     
