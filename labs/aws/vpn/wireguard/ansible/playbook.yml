@@ -78,6 +78,6 @@
     - name: Deploy wireguard docker-compose stack
       docker_compose:
         project_name: wireguard
-        project_src: .
+        project_src: /home/ec2-user/{{ item }}
         files:  
           - docker-compose.yml
