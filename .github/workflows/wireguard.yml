@@ -68,7 +68,7 @@ jobs:
           terraform validate
       - name: Terraform plan
         run: |
-          terraform plan -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
+          terraform plan -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"  -var="AWS_SSH_KEY_PRIVATE=${{ secrets.TF_VAR_AWS_SSH_KEY_PRIVATE }}"
       - name: Terraform apply
         run: |
           terraform apply -auto-approve -input=false -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}" -var="AWS_SSH_KEY_PRIVATE=${{ secrets.TF_VAR_AWS_SSH_KEY_PRIVATE }}"
