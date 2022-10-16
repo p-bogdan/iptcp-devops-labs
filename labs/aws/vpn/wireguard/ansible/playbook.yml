@@ -79,7 +79,9 @@
       docker_compose:
         project_name: wireguard
         #project_src: "/home/ec2-user/"
+        project_src: "/home/ec2-user"
+        remove_orphans: yes
         files:
-          - ./home/ec2-user/docker-compose.yml
+        - docker-compose.yml
         #files:  
         #  - docker-compose.yml
