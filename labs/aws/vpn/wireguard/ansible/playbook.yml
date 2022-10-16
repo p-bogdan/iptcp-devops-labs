@@ -71,6 +71,9 @@
           #- docker-compose==1.29.2
     - name: Install ansible docker collection
       command: ansible-galaxy collection install community.docker
+    
+    - name: Test path location
+      command: ls -alR
    
     - name: Deploy wireguard docker-compose stack
       docker_compose:
