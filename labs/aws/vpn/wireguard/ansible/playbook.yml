@@ -73,6 +73,10 @@
           - docker==6.0.0
           #- requests==2.28.1
           - docker-compose==1.29.2
+          #AWS
+          - boto
+          - boto3
+          - botocore
         executable: pip3
     
 
