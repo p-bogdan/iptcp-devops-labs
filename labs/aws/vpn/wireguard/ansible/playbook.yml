@@ -66,7 +66,7 @@
         name:
           - ansible-core==2.13.5
           #- ansible-lint==6.7.0
-          - ansible-lint
+          - ansible-lint==6.0.2
           - jsondiff==2.0.0
           - passlib==1.7.4
           - PyYAML==5.4.1
