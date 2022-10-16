@@ -79,7 +79,7 @@
       docker_compose:
         project_name: wireguard
         #project_src: "/home/ec2-user/"
-        loop:
+        files:
           - docker-compose.yml
         #files:  
         #  - docker-compose.yml
