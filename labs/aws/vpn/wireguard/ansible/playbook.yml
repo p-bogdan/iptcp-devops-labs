@@ -78,7 +78,7 @@
     - name: Deploy wireguard docker-compose stack
       docker_compose:
         project_name: wireguard
-        project_src: "/home/ec2-user/{{ item }}"
+        #project_src: "/home/ec2-user/"
         loop:
           - docker-compose.yml
         #files:  
