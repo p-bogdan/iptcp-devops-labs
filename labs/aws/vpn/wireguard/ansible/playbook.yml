@@ -73,7 +73,7 @@
       command: ansible-galaxy collection install community.docker
     
     - name: Test path location
-      command: ls -alR
+      command: cat docker-compose.yml
    
     - name: Deploy wireguard docker-compose stack
       docker_compose:
