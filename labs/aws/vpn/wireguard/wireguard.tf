@@ -192,7 +192,7 @@ resource "aws_instance" "bastion" {
   #   }
 provisioner "file" {
   #source      = "${path.module}/files/docker-compose.yml"
-  source      = templatefile("${path.module}/files/docker-compose.yml", { public_ip = "${aws_instance.bastion.public_ip}" })
+  source      = templatefile("${path.module}/files/docker-compose.tftpl", { public_ip = "${aws_instance.bastion.public_ip}" })
   destination = "/home/ec2-user/docker-compose.yml"
 
   connection {
