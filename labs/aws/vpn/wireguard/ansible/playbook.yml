@@ -64,15 +64,15 @@
     - name: Install specified python requirements
       pip:
         name:
-          - ansible-core==2.13.4
-          #- ansible-lint==6.7.0
+          - ansible-core==2.13.5
+          - ansible-lint==6.7.0
           - jsondiff==2.0.0
           - passlib==1.7.4
           - PyYAML==6.0
           - docker==6.0.0
           #- requests==2.28.1
           - docker-compose==1.29.2
-        executable: pip-3.9
+        executable: pip3
 
     - name: Install ansible docker collection
       command: ansible-galaxy collection install community.docker
