@@ -113,8 +113,8 @@
       #docker_compose:
       community.docker.docker_compose:
         project_name: wireguard
-        #project_src: "/home/ec2-user/"
-        project_src: "/home/ec2-user/{{ item }}"
+        project_src: "/home/ec2-user/"
+        #project_src: "/home/ec2-user/{{ item }}"
         #project_src: "/home/ec2-user"
         remove_orphans: yes
         files:
