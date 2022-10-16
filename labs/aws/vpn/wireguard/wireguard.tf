@@ -189,7 +189,17 @@ resource "aws_instance" "bastion" {
   #     source      = "config"
   #     destination = "/tmp/config"
   #   }
+provisioner "file" {
+  source      = "${path.module}/files/docker-compose.yml"
+  destination = "/tmp/docker-compose.yml"
 
+  # connection {
+  #   type     = "ssh"
+  #   user     = "ec2-user"
+  #   password = "${var.root_password}"
+  #   host     = "${var.host}"
+  # }
+}
   tags = {
     Name              = "bastion-01"
     Stack             = "dev"
@@ -201,6 +211,8 @@ resource "aws_instance" "bastion" {
 # data "http" "myip" {
 #   url = "http://ipv4.icanhazip.com"
 # }
+
+
 
 resource "aws_security_group" "bastion-01-sg" {
   name        = "bastion-01-sg"
