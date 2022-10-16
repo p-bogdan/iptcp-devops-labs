@@ -76,7 +76,8 @@
       command: cat docker-compose.yml
    
     - name: Deploy wireguard docker-compose stack
-      docker_compose:
+      #docker_compose:
+      community.docker.docker_compose:
         project_name: wireguard
         #project_src: "/home/ec2-user/"
         project_src: "/home/ec2-user/{{ item }}"
@@ -89,3 +90,4 @@
         - docker-compose.yml
         #files:  
         #  - docker-compose.yml
+    
