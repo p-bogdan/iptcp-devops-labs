@@ -16,6 +16,7 @@ on:
 
 env:
   AWS_SSH_KEY: ${{ secrets.AWS_SSH_KEY }}
+  AWS_SSH_KEY_PRIVATE: ${{ secrets.TF_VAR_AWS_SSH_KEY_PRIVATE }}
 
 defaults:
  run:
@@ -48,4 +49,4 @@ jobs:
 
       - name: Terraform Destroy
         run: |
-          terraform destroy -auto-approve -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
+          terraform destroy -auto-approve -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}" -var="AWS_SSH_KEY_PRIVATE=${{ secrets.TF_VAR_AWS_SSH_KEY_PRIVATE }}"
