@@ -116,11 +116,11 @@
         project_src: "/home/ec2-user/{{ item }}"
         #project_src: "/home/ec2-user"
         remove_orphans: yes
-        #files:
-        #- docker-compose.yml
+        files:
+          - docker-compose.yml
         state: present
-      loop:
-        - docker-compose.yml
+      #loop:
+      #  - docker-compose.yml
         #files:  
         #  - docker-compose.yml
     
