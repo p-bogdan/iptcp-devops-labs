@@ -75,6 +75,6 @@
     - name: Deploy wireguard docker-compose stack
       docker_compose:
         project_name: wireguard
-        project_src: /tmp
+        project_src: /tmp/
         files:  
           - docker-compose.yml
