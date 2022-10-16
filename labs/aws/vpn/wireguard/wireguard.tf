@@ -192,7 +192,7 @@ resource "aws_instance" "bastion" {
   #   }
 provisioner "file" {
   source      = "${path.module}/files/docker-compose.yml"
-  destination = "/tmp/docker-compose.yml"
+  destination = "/home/ec2-user/docker-compose.yml"
 
   connection {
     type     = "ssh"
