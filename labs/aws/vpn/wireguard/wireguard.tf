@@ -137,6 +137,7 @@ data "aws_ami" "amazon-linux-2" {
 }
 
 variable "AWS_SSH_KEY" {}
+variable "AWS_SSH_KEY_PRIVATE" {}
 
 resource "aws_key_pair" "kp" {
   key_name   = "aws"
@@ -193,12 +194,12 @@ provisioner "file" {
   source      = "${path.module}/files/docker-compose.yml"
   destination = "/tmp/docker-compose.yml"
 
-  # connection {
-  #   type     = "ssh"
-  #   user     = "ec2-user"
-  #   password = "${var.root_password}"
-  #   host     = "${var.host}"
-  # }
+  connection {
+    type     = "ssh"
+    user     = "ec2-user"
+    private_key = var.AWS_SSH_KEY_PRIVATE
+    host     = aws_instance.bastion.public_ip
+  }
 }
   tags = {
     Name              = "bastion-01"

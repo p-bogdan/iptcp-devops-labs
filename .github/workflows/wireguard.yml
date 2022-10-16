@@ -70,7 +70,7 @@ jobs:
           terraform plan -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
       - name: Terraform apply
         run: |
-          terraform apply -auto-approve -input=false -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}"
+          terraform apply -auto-approve -input=false -var="AWS_SSH_KEY=${{ secrets.TF_VAR_AWS_SSH_KEY }}" -var="AWS_SSH_KEY_PRIVATE=${{ secrets.TF_VAR_AWS_SSH_KEY_PRIVATE }}"
       #- name: Install jq
       #  run: jq --version
       # terraform output -json |jq --raw-output '.[].value'
