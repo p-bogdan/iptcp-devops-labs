@@ -75,6 +75,18 @@
     - name: Test path location
       command: cat docker-compose.yml
     
+    - name: Enable docker.service
+      systemd:
+        name: docker.service
+        daemon_reload: true
+        enabled: true
+
+    - name: Enable containerd.service
+      systemd:
+        name: containerd.service
+        daemon_reload: true
+        enabled: true
+    
     - name: Deploy wireguard docker-compose stack
       command: docker-compose -f docker-compose.yml up -d
    
