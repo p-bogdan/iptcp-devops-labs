@@ -1,4 +1,3 @@
-yamlencode({
 version: "3.9"
 services:
   wireguard:
@@ -11,7 +10,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Kyiv
-      - SERVERURL=${public_ip} #optional      
+      - SERVERURL="${aws_instance.bastion.public_ip}" #optional      
       - SERVERPORT=51820 #optional
       - PEERS=1 #optional
       - PEERDNS=auto #optional
@@ -26,5 +25,4 @@ services:
     sysctls:
       - net.ipv4.conf.all.src_valid_mark=1
     restart: unless-stopped
- })
 
