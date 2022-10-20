@@ -146,12 +146,11 @@ resource "aws_key_pair" "kp" {
 }
 
  resource "local_file" "tf_ansible_vars_file" {
-     content  = base64encode(yamlencode(
+     content  = yamlencode(
     {
       public_ip = "${aws_eip.default[0].public_ip}"
     }
   )
-     )
   filename = "${path.module}/files/docker-compose.tftpl"
 }
 
