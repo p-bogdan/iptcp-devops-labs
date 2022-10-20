@@ -145,7 +145,15 @@ resource "aws_key_pair" "kp" {
 
 }
 
-
+ resource "local_file" "tf_ansible_vars_file" {
+     content  = base64encode(yamlencode(
+    {
+      public_ip = "${aws_eip.default[0].public_ip}"
+    }
+  )
+     )
+  filename = "${path.module}/files/docker-compose.tftpl"
+}
 
 resource "aws_instance" "bastion" {
   depends_on = [aws_internet_gateway.gw]
@@ -193,7 +201,7 @@ resource "aws_instance" "bastion" {
 provisioner "file" {
   #source      = "${path.module}/files/docker-compose.yml"
   #source      = templatefile("${path.module}/files/docker-compose.tftpl", { public_ip = "${aws_instance.bastion.public_ip}" })
-  source      = file("${path.module}/files/docker-compose.tftpl")
+  source      = local_file.tf_ansible_vars_file.filename
   
   #source      = 
   
