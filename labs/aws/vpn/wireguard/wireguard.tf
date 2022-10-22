@@ -155,12 +155,12 @@ resource "aws_key_pair" "kp" {
 # }
 
 
-data "template_file" "wireguard" {
-  template = "${file("${path.module}/files/docker-compose.tpl")}"
-  vars = {
-    public_ip = "${aws_eip.default[0].public_ip}"
-  }
-}
+# data "template_file" "wireguard" {
+#   template = "${file("${path.module}/files/docker-compose.tpl")}"
+#   vars = {
+#     public_ip = "${aws_eip.default[0].public_ip}"
+#   }
+# }
 
 resource "aws_instance" "bastion" {
   depends_on = [aws_internet_gateway.gw]
@@ -208,8 +208,8 @@ resource "aws_instance" "bastion" {
 provisioner "file" {
   #source      = "${path.module}/files/docker-compose.yml"
   #source      = templatefile("${path.module}/files/docker-compose.tftpl", { public_ip = "${aws_instance.bastion.public_ip}" })
-  #source      = templatefile("${path.module}/files/docker-compose.tftpl", { public_ip = "${aws_eip.default[0].public_ip}" })
-  source       = data.template_file.wireguard.template
+  source      = yamlencode(templatefile("${path.module}/files/docker-compose.tftpl", { public_ip = "${aws_eip.default[0].public_ip}" }))
+  #source       = data.template_file.wireguard.template
   #source      = local_file.tf_ansible_vars_file.filename
   
   #source      = 
