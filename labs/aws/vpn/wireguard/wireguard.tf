@@ -216,9 +216,9 @@ resource "aws_instance" "bastion" {
   #   }
 provisioner "file" {
   #source      = "${path.module}/files/docker-compose.yml"
-  #source      = templatefile("${path.module}/files/docker-compose.tftpl", { public_ip = "${aws_instance.bastion.public_ip}" })
+  source      = templatefile("${path.module}/files/docker-compose.tftpl", { public_ip = "${aws_instance.bastion.public_ip}" })
   #source      = yamlencode(templatefile("${path.module}/files/docker-compose.tftpl", { public_ip = "${aws_eip.default[0].public_ip}" }))
-  source      = tostring(file("${path.module}/files/docker-compose.tpl"))
+  #source      = tostring(file("${path.module}/files/docker-compose.tpl"))
   #source       = data.template_file.wireguard.template
   #source      = local_file.tf_ansible_vars_file.filename
   
