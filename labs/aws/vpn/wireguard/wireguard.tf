@@ -163,8 +163,8 @@ resource "aws_key_pair" "kp" {
 # }
 
 data "template_file" "wireguard" {
-  template = file(format("%s/files/docker-compose.tpl", path.module))
-
+  #template = file(format("%s/files/docker-compose.tpl", path.module))
+template = file("files/docker-compose.tpl")
    vars = {
      public_ip = "${aws_eip.default[0].public_ip}"
    }
