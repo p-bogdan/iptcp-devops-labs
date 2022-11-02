@@ -13,6 +13,8 @@ on:
     branches: [ "master" ]
   schedule:
     - cron: '37 12 * * 6'
+  workflow_dispatch:
+
 
 permissions:
   contents: read
