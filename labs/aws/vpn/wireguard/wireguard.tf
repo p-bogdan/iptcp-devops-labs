@@ -175,8 +175,8 @@ resource "aws_instance" "bastion" {
   depends_on = [aws_internet_gateway.gw]
 
   ami                                  = data.aws_ami.amazon-linux-2.id
-  #instance_type                        = "t2.micro"
-  instance_type                        = "t4g.micro"
+  instance_type                        = "t2.micro"
+  #instance_type                        = "t4g.micro"
   associate_public_ip_address          = true
   subnet_id                            = aws_subnet.public_subnets["az_a"].id
   instance_initiated_shutdown_behavior = "terminate"
