@@ -225,7 +225,8 @@ provisioner "file" {
   #source      = local_file.tf_ansible_vars_file.filename
   
   #source      = 
-  source       = var.wireguard_template
+  source       = templatefile(var.wireguard_template, { public_ip = "${aws_instance.bastion.public_ip}" })
+  #source       = var.wireguard_template
   destination = "/tmp/docker-compose.yml"
 
   connection {
