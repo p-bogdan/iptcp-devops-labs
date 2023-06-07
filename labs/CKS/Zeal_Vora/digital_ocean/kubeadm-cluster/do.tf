@@ -9,4 +9,5 @@ resource "digitalocean_droplet" "cks" {
   size = "s-2vcpu-2gb"
   #ssh keys from remote home access
   ssh_keys = [38416289]
+  user_data = "${file("kubeadm.sh")}"
 }
