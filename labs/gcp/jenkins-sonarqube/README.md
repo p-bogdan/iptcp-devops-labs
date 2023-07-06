@@ -1,7 +1,10 @@
 Access jenkins after terraform provisioning
 
 According to the configuration you should access K8s cluster from your local machine.
-You can access jenkins via service or via Pod
+First we need to check creds
+User - kubectl get secret jenkins -o jsonpath='{.data.jenkins-admin-user}' -n jenkins |base64 -d
+Password - kubectl get secret jenkins -o jsonpath='{.data.jenkins-admin-password}' -n jenkins |base64 -d
+Then you can access jenkins via service or via Pod
 
 Via service
 kubectl port-forward svc/jenkins 8080:8080 -n jenkins

@@ -25,41 +25,14 @@ module "gke" {
   env                      = "staging"
 }
 
-resource "helm_release" "jenkins" {
+resource "helm_release" "argocd" {
   depends_on = [module.gke, module.compute_network]
-  name       = "jenkins"
-  namespace  = "jenkins"
+  name       = "argocd"
+  namespace  = "argocd"
 
-  repository = "https://charts.jenkins.io"
-  chart      = "jenkins"
+  repository = "https://argoproj.github.io/argo-helm"
+  chart      = "argo-cd"
   wait = true
   wait_for_jobs = true
   create_namespace = true
-  #set {
-  set_list {
-    #works for dictionary part of config
-    # controller:
-    #   additionalplugins:
-    #     - sonar:2.15
-    #name  = "controller.additionalPlugins[0]"
-    name = "controller.additionalPlugins"
-    #value = "sonar:2.15"
-    value = ["sonar:2.15", "jacoco:3.3.4", "maven-plugin:3.22"]
-  }
-  set {
-    name = "agent.resources.limits.cpu"
-    value = "2000m"
-  }
-  set {
-    name = "agent.resources.limits.memory"
-    value = "6144Mi"
-  }
-  set {
-    name = "agent.resources.requests.cpu"
-    value = "1500m"
-  }
-  set {
-    name = "agent.resources.requests.memory"
-    value = "4608Mi"
-  }
 }
