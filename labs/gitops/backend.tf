@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
-    bucket = "gcp-terraform-k8s"
-    prefix = "terraform"
+    bucket = "cks-iptcp"
+    prefix = "lab1"
     # project = "gcp-training-iptcp"
 
   }

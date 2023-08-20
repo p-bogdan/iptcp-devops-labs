@@ -1,6 +1,6 @@
 provider "google" {
-  project = "lab-project-282605"
-  region  = "europe-west1"
+  project = "ci-cd-387713"
+  region  = "us-east1"
 }
 
 
@@ -32,15 +32,15 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 3.60.0"
+      #version = "~> 3.60.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.0.3"
+      #version = "~> 2.0.3"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.0.3"
+      #version = "~> 2.0.3"
     }
   }
 }
