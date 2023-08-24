@@ -45,12 +45,32 @@ echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https:/
 
 sudo apt-get update
 apt-cache madison kubeadm
-sudo apt-get install -y kubelet=1.27.2-00 kubeadm=1.27.2-00 kubectl=1.27.2-00 cri-tools=1.26.0-00
+sudo apt-get install -y kubelet=1.28.0-00 kubeadm=1.28.0-00 kubectl=1.28.0-00 cri-tools=1.26.0-00
 sudo apt-mark hold kubelet kubeadm kubectl
-
-echo "alias kubectl='sudo kubectl'" >> /home/iptcp/.bashrc
-echo "alias kubeadm='sudo kubeadm'" >> /home/iptcp/.bashrc
-chown iptcp:iptcp /home/iptcp/.bashrc
 
 #echo "### COMMAND TO ADD A WORKER NODE ###"
 #kubeadm token create --print-join-command --ttl 0
+
+#Install kustomize 
+curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh"| bash
+mv kustomize /usr/local/bin/
+
+#Install helm
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install -y helm
+
+#Setup visualizer
+sudo helm repo add christianknell https://christianknell.github.io/helm-charts
+sudo helm repo update
+sudo helm install kube-ops-view christianknell/kube-ops-view
+sudo kubectl patch svc kube-ops-view --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"},{"op":"replace","path":"/spec/ports/0/nodePort","value":32000}]'
+
+
+#Setup aliases
+echo "alias kubectl='sudo kubectl'" >> /home/iptcp/.bashrc
+echo "alias kubeadm='sudo kubeadm'" >> /home/iptcp/.bashrc
+echo "alias helm='sudo helm'" >> /home/iptcp/.bashrc
+chown iptcp:iptcp /home/iptcp/.bashrc

@@ -3,7 +3,7 @@ resource "google_compute_firewall" "default" {
   network = "default"
 
   allow {
-    ports = ["22", "30000-40000"]
+    ports = ["22", "4505-4506"]
     protocol = "tcp"
     #ports    = ["80", "8080", "1000-2000"]
   }

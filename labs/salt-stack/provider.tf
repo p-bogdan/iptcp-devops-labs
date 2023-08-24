@@ -33,7 +33,7 @@ terraform {
     google = {
       source  = "hashicorp/google"
       #version = "~> 4.66.0"
-      version = ">= 4.66.0"
+      #version = ">= 4.66.0"
     }
     #kubernetes = {
     #  source  = "hashicorp/kubernetes"

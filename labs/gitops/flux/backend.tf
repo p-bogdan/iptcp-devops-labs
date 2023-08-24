@@ -1,7 +1,7 @@
 terraform {
   backend "gcs" {
-    bucket = "cks-iptcp"
-    prefix = "lab1"
+    bucket = "devops_bootcamp_la"
+    prefix = "flux"
     # project = "gcp-training-iptcp"
 
   }
