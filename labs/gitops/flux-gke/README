@@ -1,0 +1,59 @@
+Post-install
+1. Verify that you can access k8s cluster
+ kubectl get nodes
+ kubectl config get-contexts
+ kubectl get pods -A
+ kubectl get crds
+ 
+ 2.flux provision
+ 2.1 Run flux checks
+ flux check --pre
+ 2.2. Provision flux repo
+ flux bootstrap github   --owner=$GITHUB_USER  \
+ --repository=flux-infra \
+ --branch=main  \
+ --path=./clusters/dev  \
+ --personal \
+ --log-level=debug \
+ --network-policy=false \
+ --components=source-controller,kustomize-controller
+
+ 2.3. Verify that flux installed successfully
+ flux check
+
+ 2.4. Verify that installed on k8s side
+ kubectl get crds
+ kubectl get pods -n flux-system
+ kubectl get all -n flux-system
+ kubectl get clusterroles,clusterrolebindings,serviceaccounts -n flux-system -l "app.kubernetes.io/instance=flux-system"
+
+ 2.5. Verify that kustomizations and sources were created
+ flux get ks
+ flux get sources git
+
+ 3. Create a Git Source to Sync with the Repository
+flux create source git instavote \
+  --url=https://github.com/p-bogdan/instavote \
+  --branch=main \
+  --interval=30s
+3.1. Check if new git source was successfully setup and sync
+flux get sources git
+
+3.2. Make sure that instavote ns is created
+kubectl get ns
+kubectl create ns instavote
+kubectl get ns
+
+3.3. Create kustomization
+flux create kustomization vote-dev \
+  --source=instavote \
+  --path="./vote" \
+  --prune=true \
+  --interval=1m \
+  --target-namespace=instavote
+
+3.4. Verify that kustomization was created successfully
+flux get ks
+flux get sources 
+flux reconcile ks vote-dev
+flux reconcile source git instavote
