@@ -19,7 +19,7 @@ sudo systemctl restart salt-master
 #sudo salt-key --finger-all
 # I've faced the following issue - The Salt Master has cached the public key for this node, this salt minion will wait for 10 seconds before attempting to re-authenticate
 # Solution: on salt-master
-#1) delete minion1 key
+#1) delete minion1 key (optional should work with the second step)
 #sudo salt-key -d minion1
 # 2) accept minion1 key
 # sudo salt-key -a minion1
@@ -28,4 +28,15 @@ sudo systemctl restart salt-master
 # Now minion1 key should be accepted
 
 #Run test commands
-# sudo salt minion1 test.ping
+
+#ping
+# sudo salt minion1 test.ping or sudo salt '*' test.ping (to ping all minions)
+
+#disk usage
+# sudo salt '*' disk.usage 
+
+#install nginx package
+# sudo salt minion1 pkg.install nginx
+
+# cmd.run is run to run shell commands on salt minions from the salt master (list /etc folder on minions)
+# sudo salt '*' cmd.run 'ls -l /etc' 

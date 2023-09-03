@@ -21,5 +21,6 @@ gcloud compute ssh --zone us-west1-b iptcp@salt-master --quiet -- 'sudo salt-key
 fingerprint=$(sudo sed -n 's/.*master.pub: *//p' /tmp/test.log)
 sudo echo "master_finger: '$fingerprint'" | sudo tee -a /etc/salt/minion
 sudo chown -R salt:salt /etc/salt
+gcloud compute ssh --zone us-west1-b iptcp@salt-master --quiet -- 'sudo salt-key -A -y'
 sudo systemctl restart salt-minion
 
