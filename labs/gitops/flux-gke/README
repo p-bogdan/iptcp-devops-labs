@@ -31,6 +31,8 @@ Post-install
  flux get ks
  flux get sources git
 
+(Till point 3, provisioning is automated with terraform)
+
  3. Create a Git Source to Sync with the Repository
 flux create source git instavote \
   --url=https://github.com/p-bogdan/instavote \
@@ -47,13 +49,19 @@ kubectl get ns
 3.3. Create kustomization
 flux create kustomization vote-dev \
   --source=instavote \
-  --path="./vote" \
+  --path="./deploy/vote" \
   --prune=true \
   --interval=1m \
   --target-namespace=instavote
 
 3.4. Verify that kustomization was created successfully
 flux get ks
-flux get sources 
+flux get sources git 
 flux reconcile ks vote-dev
 flux reconcile source git instavote
+
+
+
+Destroy infra
+Since we don't want to remove flux git repository after terraform destroy to be able to remove our terraform infra, we can remove it manually from state file - terraform state rm flux_bootstrap_git.this
+After that we can destroy remaining resources - terraform destroy -auto-approve
