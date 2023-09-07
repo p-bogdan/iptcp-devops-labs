@@ -3,17 +3,43 @@ provider "google" {
   region  = "us-east1"
 }
 
+# provider "flux" {
+#   kubernetes = {
+#     config_path = "~/.kube/config"
+#   }
+#   # git = {
+#   #   url  = "https://github.com/p-bogdan/flux-infra.git"
+#   #   #ssh = {
+#   #   #  username    = "git"
+#   #   #  private_key = "~/.ssh/google_compute_engine"
+#   #   #}
+#   # }
+# }
+
 provider "flux" {
   kubernetes = {
-    config_path = "~/.kube/config"
+    host                   = "https://${module.gke.k8s-cluster-endpoint}"
+    #client_certificate     = module.gke.client_certificate
+    #client_key             = module.gke.client_key
+    #token = module.gke.access_token
+    token = module.gke.access_token
+    config_path = module.gke.kubeconfig
+    cluster_ca_certificate = base64decode(
+    module.gke.cluster_ca_cert,
+  )
   }
   git = {
-    url  = "https://github.com/p-bogdan/flux-infra.git"
-    #ssh = {
-    #  username    = "git"
-    #  private_key = "~/.ssh/google_compute_engine"
-    #}
+    url = "ssh://git@github.com/${var.github_org}/${var.github_repository}.git"
+    ssh = {
+      username    = "git"
+      private_key = tls_private_key.flux.private_key_pem
+    }
   }
+}
+
+provider "github" {
+  owner = var.github_org
+  token = var.github_token
 }
 
 provider "kubernetes" {
@@ -62,6 +88,10 @@ terraform {
      flux = {
       source  = "fluxcd/flux"
       #version = ">= 1.0.0"
+    }
+      github = {
+      source  = "integrations/github"
+      #version = ">=5.18.0"
     }
   }
 }
