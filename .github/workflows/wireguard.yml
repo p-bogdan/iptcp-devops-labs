@@ -44,7 +44,7 @@ jobs:
       #
     steps:   
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}      
 
@@ -109,7 +109,7 @@ jobs:
       run:
         working-directory: ./labs/aws/vpn/wireguard/ansible
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       # - name: Set up Python 3.9
       #   uses: actions/setup-python@v4
       #   with:
@@ -176,7 +176,7 @@ jobs:
   #   #  contents: read
   #   #  id-token: write
   #   steps:
-  #   - uses: actions/checkout@v3
+  #   - uses: actions/checkout@v4
   #   - uses: ./.github/actions/ansible
   #   #- uses: ./github/actions/ansible
   #     with: 
