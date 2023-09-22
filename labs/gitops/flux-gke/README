@@ -31,8 +31,6 @@ Post-install
  flux get ks
  flux get sources git
 
-(Till point 3, provisioning is automated with terraform)
-
  3. Create a Git Source to Sync with the Repository
 flux create source git instavote \
   --url=https://github.com/p-bogdan/instavote \
@@ -52,7 +50,8 @@ flux create kustomization vote-dev \
   --path="./deploy/vote" \
   --prune=true \
   --interval=1m \
-  --target-namespace=instavote
+  --target-namespace=instavote \
+  --export > vote-dev.yaml
 
 3.4. Verify that kustomization was created successfully
 flux get ks
@@ -61,6 +60,37 @@ flux reconcile ks vote-dev
 flux reconcile source git instavote
 
 
+4. Adding healthcheck before declaring kustomization to be ready
+flux create kustomization vote-dev \
+  --source=instavote \
+  --path="./deploy/vote" \
+  --prune=true\
+  --interval=1m \
+  --health-check="Deployment/vote.instavote" \
+  --export > vote-dev-kustomization.yaml
+
+5. Create kustomization for redis
+flux create kustomization redis-dev \
+--source=instavote \
+--path="./deploy/redis" \
+--prune=true \
+--interval=1m \
+--target-namespace=instavote \
+--health-check="Deployment/redis.instavote" \
+--export > redis-kustomization.yaml
+
+6. Modify the vote kustomization to depends on redis:
+flux create kustomization vote-dev \
+  --source=instavote \
+  --path="./deploy/vote" \
+  --prune=true \
+  --interval=1m \
+  --target-namespace=instavote \
+  --health-check="Deployment/vote.instavote" \
+  --depends-on=redis-dev \
+  --export > vote-dev-kustomization.yaml
+
+(Provisioning is automated with terraform and pre-configured manifests in github repos)
 
 Destroy infra
 Since we don't want to remove flux git repository after terraform destroy to be able to remove our terraform infra, we can remove it manually from state file - terraform state rm flux_bootstrap_git.this
