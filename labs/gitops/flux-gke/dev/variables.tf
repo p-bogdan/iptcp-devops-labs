@@ -12,3 +12,8 @@ variable "github_repository" {
   type = string
   default = "flux-infra"
 }
+
+# variable "branch" {
+#   type = list(string)
+#   default = ["dev", "staging"]
+# }

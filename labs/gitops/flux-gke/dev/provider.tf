@@ -18,24 +18,27 @@ provider "google" {
 
 provider "flux" {
   kubernetes = {
-    host                   = "https://${module.gke.k8s-cluster-endpoint}"
-    #client_certificate     = module.gke.client_certificate
-    #client_key             = module.gke.client_key
-    #token = module.gke.access_token
-    token = module.gke.access_token
-    config_path = module.gke.kubeconfig
+    #config_context = "dev"
+    host                   = "https://${module.gke_dev.k8s-cluster-endpoint}"
+    #client_certificate     = module.gke_dev.client_certificate
+    #client_key             = module.gke_dev.client_key
+    #token = module.gke_dev.access_token
+    token = module.gke_dev.access_token
+    config_path = module.gke_dev.kubeconfig
     cluster_ca_certificate = base64decode(
-    module.gke.cluster_ca_cert,
+    module.gke_dev.cluster_ca_cert,
   )
   }
-  git = {
-    url = "ssh://git@github.com/${var.github_org}/${var.github_repository}.git"
-    ssh = {
-      username    = "git"
-      private_key = tls_private_key.flux.private_key_pem
+    git = {
+      url = "ssh://git@github.com/${var.github_org}/${var.github_repository}.git"
+      branch = "dev"
+      ssh = {
+        username    = "git"
+        private_key = tls_private_key.flux.private_key_pem
+      }
     }
-  }
 }
+
 
 provider "github" {
   owner = var.github_org
@@ -44,11 +47,11 @@ provider "github" {
 
 provider "kubernetes" {
   #load_config_file = false
-
-  host  = "https://${module.gke.k8s-cluster-endpoint}"
-  token = module.gke.access_token
+  #config_context = "dev"
+  host  = "https://${module.gke_dev.k8s-cluster-endpoint}"
+  token = module.gke_dev.access_token
   cluster_ca_certificate = base64decode(
-    module.gke.cluster_ca_cert,
+    module.gke_dev.cluster_ca_cert,
   )
 }
 
@@ -57,12 +60,13 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-    host        = "https://${module.gke.k8s-cluster-endpoint}"
+    #config_context = "dev"
+    host        = "https://${module.gke_dev.k8s-cluster-endpoint}"
     #token       = var.access_token
-    token = module.gke.access_token
-    config_path = module.gke.kubeconfig
+    token = module.gke_dev.access_token
+    config_path = module.gke_dev.kubeconfig
     cluster_ca_certificate = base64decode(
-      module.gke.cluster_ca_cert
+      module.gke_dev.cluster_ca_cert
     )
   }
 }

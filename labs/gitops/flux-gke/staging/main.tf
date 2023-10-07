@@ -2,19 +2,20 @@ module "compute_network" {
   source              = "git@github.com:p-bogdan/iptcp-gcp-reusable-modules.git//modules/gcp/vpc"
   project             = "ci-cd-387713"
   region              = "us-east1"
-  network_name        = "k8s-network"
-  ipv4_range_backends = "10.132.5.0/24"
+  network_name        = "k8s-staging"
+  subnetwork_name     = "k8s-staging-subnet"
+  ipv4_range_backends = "10.132.2.0/24"
   source_ranges       = ["0.0.0.0/0"]
   fw_ports            = ["80", "8080", "443", "22", "30000-32767"]
   target_tags         = ["k8s"]
 }
 
-module "gke" {
+module "gke_staging" {
   depends_on               = [module.compute_network]
   source                   = "git@github.com:p-bogdan/iptcp-gcp-reusable-modules.git//modules/gcp/gke"
   project                  = "ci-cd-387713"
   zone                     = "us-east1-b"
-  cluster_name             = "k8s-lab"
+  cluster_name             = "k8s-lab-staging"
   node_count               = "2"
   machine_type             = "n1-standard-1"
   disk_size_gb             = 20
@@ -25,9 +26,10 @@ module "gke" {
   preemptible              = false
   remove_default_node_pool = true
   env                      = "staging"
-  network              = "k8s-network"
+  network              = "k8s-staging"
   subnetwork           = module.compute_network.subnetwork_id
   gke_tags             = ["k8s"]
+  context              = "staging"
 }
 
 resource "tls_private_key" "flux" {
@@ -54,14 +56,17 @@ resource "github_repository_deploy_key" "this" {
 #   }
 # }
 
-resource "flux_bootstrap_git" "this" {
+resource "flux_bootstrap_git" "staging" {
   #depends_on = [module.gke, module.compute_network ]
   depends_on = [github_repository_deploy_key.this]
   #components = [source-controller kustomize-controller helm-controller notification-controller]
   components = ["source-controller", "kustomize-controller"]
   #namespace = kubernetes_namespace.flux_system.metadata.0.name
   #namespace = "flux-system"
-  path = "clusters/dev"
+  path = "./clusters/staging"
+  log_level = "debug"
+  network_policy = "false"
+
 
   # provisioner "local-exec" {
   #   when       = destroy
@@ -75,3 +80,38 @@ resource "flux_bootstrap_git" "this" {
   # }
   #flux uninstall (yes)
 }
+
+# resource "flux_bootstrap_git" "staging" {
+#   depends_on = [github_repository_deploy_key.this]
+#   #components = [source-controller kustomize-controller helm-controller notification-controller]
+#   components = ["source-controller", "kustomize-controller"]
+#   #log_level = "debug"
+#   #network_policy = "false"
+#   path = "staging"
+
+# }
+
+# data "github_repository" "flux" {
+#   depends_on = [flux_bootstrap_git.infra]
+#   full_name = "hashicorp/terraform"
+# }
+
+
+# # Flux
+# data "flux_bootstrap_git" "main" {
+#   target_path = "./clusters/staging"
+# }
+
+
+# data "flux_sync" "main" {
+#   target_path = flux_bootstrap_git.main.path
+#   url         = "ssh://git@github.com/${var.github_owner}/${var.repository_name}.git"
+#   branch      = staging
+# }
+
+# resource "github_repository_file" "install" {
+#   repository = data.github_repository.flux.name
+#   file       = data.flux_bootstrap_git.main.path
+#   content    = data.flux_bootstrap_git.main.content
+#   branch     = staging
+# }
