@@ -92,6 +92,31 @@ flux create kustomization vote-dev \
 
 (Provisioning is automated with terraform and pre-configured manifests in github repos)
 
+How to access dev,staging clusters that are running
+1) Check what clusters are running
+gcloud container clusters list
+2) Install gke-cloud-auth-plugin binary
+gcloud components install gke-gcloud-auth-plugin
+3) Check its version
+gke-gcloud-auth-plugin --version
+4) Access to dev cluster
+gcloud container clusters get-credentials k8s-lab-dev \
+    --region=us-east1-b
+5) Verify configured contexts
+kubectl config get-contexts
+We can see that our dev cluster context is named as gke_ci-cd-387713_us-east1-b_k8s-lab-dev
+6) Let's rename this context to dev 
+kubectl config rename-context gke_ci-cd-387713_us-east1-b_k8s-lab-dev dev for easier reference
+
+Staging
+The same as with dev cluster setup context
+1) gcloud container clusters get-credentials k8s-lab-staging \
+    --region=us-east1-b
+2) kubectl config rename-context gke_ci-cd-387713_us-east1-b_k8s-lab-staging staging
+3) Check all contexts
+kubectl config get-contexts
+Now you should dev, staging contexts beetween which you can switch
+
 Destroy infra
 Since we don't want to remove flux git repository after terraform destroy to be able to remove our terraform infra, we can remove it manually from state file - terraform state rm flux_bootstrap_git.this
 After that we can destroy remaining resources - terraform destroy -auto-approve
