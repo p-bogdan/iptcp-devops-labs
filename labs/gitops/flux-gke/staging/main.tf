@@ -60,7 +60,7 @@ resource "flux_bootstrap_git" "staging" {
   #depends_on = [module.gke, module.compute_network ]
   depends_on = [github_repository_deploy_key.this]
   #components = [source-controller kustomize-controller helm-controller notification-controller]
-  components = ["source-controller", "kustomize-controller"]
+  components = ["source-controller", "kustomize-controller", "helm-controller"]
   #namespace = kubernetes_namespace.flux_system.metadata.0.name
   #namespace = "flux-system"
   path = "./clusters/staging"
