@@ -117,6 +117,40 @@ The same as with dev cluster setup context
 kubectl config get-contexts
 Now you should dev, staging contexts beetween which you can switch
 
+How to create sealed secret for flux+slack integration (webhook)
+1) Create secret and export it to yaml file
+kubectl create secret -n flux-system generic slack-url --from-literal=address=https://hooks.slack.com/services/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 --dry-run=client -o yaml > flux_slack.yaml
+
+2) Create sealed secret
+kubeseal <flux_slack.yaml >sealed_flux_slack.yaml --format=yaml --controller-name=sealed-secrets
+
+Sometimes we need to run kubectl apply -f sealed_flux_slack.yaml manually, for some reason secret isn't created automatically, hopefully will be fixed later.
+
+
+Alert providers
+1)  Check alert providers
+flux get alert-providers
+2) Creating alert provider
+flux create alert-provider slack \
+  --type=slack \
+  --channel=devops \
+  --secret-ref=slack-url --export
+
+3) Set up an alert to Send Notifications to Slack and track the following resources - kustomization, gitrepository, helmrelease
+
+flux create alert slack-notif \
+  --provider-ref=slack \
+  --event-source="GitRepository/*" \
+  --event-source="Kustomization/*" \
+  --event-source="HelmRelease/*" \
+  --event-severity=info \
+  --export
+
+4) Check created alert
+flux get alert
+NAME       	SUSPENDED	READY	MESSAGE
+slack-notif	False    	True 	Initialized
+
 Destroy infra
 Since we don't want to remove flux git repository after terraform destroy to be able to remove our terraform infra, we can remove it manually from state file - terraform state rm flux_bootstrap_git.this
 After that we can destroy remaining resources - terraform destroy -auto-approve

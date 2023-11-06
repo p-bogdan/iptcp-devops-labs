@@ -66,52 +66,16 @@ resource "flux_bootstrap_git" "staging" {
   path = "./clusters/staging"
   log_level = "debug"
   network_policy = "false"
-
-
-  # provisioner "local-exec" {
-  #   when       = destroy
-  #   command    = "kubectl patch customresourcedefinition helmcharts.source.toolkit.fluxcd.io helmreleases.helm.toolkit.fluxcd.io helmrepositories.source.toolkit.fluxcd.io kustomizations.kustomize.toolkit.fluxcd.io gitrepositories.source.toolkit.fluxcd.io -p '{\"metadata\":{\"finalizers\":null}}'"
-  #   on_failure = continue
-  # }
-  #   provisioner "local-exec" {
-  #   when    = destroy
-  #   #interpreter = ["bash", "-c"]
-  #   command = "flux uninstall -n flux-system --silent"
-  # }
-  #flux uninstall (yes)
 }
 
-# resource "flux_bootstrap_git" "staging" {
-#   depends_on = [github_repository_deploy_key.this]
-#   #components = [source-controller kustomize-controller helm-controller notification-controller]
-#   components = ["source-controller", "kustomize-controller"]
-#   #log_level = "debug"
-#   #network_policy = "false"
-#   path = "staging"
+resource "helm_release" "kubeseal" {
+  depends_on = [module.gke_staging, module.compute_network, flux_bootstrap_git.staging]
+  name       = "sealed-secrets"
+  namespace  = "kube-system"
 
-# }
-
-# data "github_repository" "flux" {
-#   depends_on = [flux_bootstrap_git.infra]
-#   full_name = "hashicorp/terraform"
-# }
-
-
-# # Flux
-# data "flux_bootstrap_git" "main" {
-#   target_path = "./clusters/staging"
-# }
-
-
-# data "flux_sync" "main" {
-#   target_path = flux_bootstrap_git.main.path
-#   url         = "ssh://git@github.com/${var.github_owner}/${var.repository_name}.git"
-#   branch      = staging
-# }
-
-# resource "github_repository_file" "install" {
-#   repository = data.github_repository.flux.name
-#   file       = data.flux_bootstrap_git.main.path
-#   content    = data.flux_bootstrap_git.main.content
-#   branch     = staging
-# }
+  repository = "https://bitnami-labs.github.io/sealed-secrets"
+  chart      = "sealed-secrets"
+  wait = true
+  wait_for_jobs = true
+  create_namespace = true
+}
