@@ -119,7 +119,7 @@ Now you should dev, staging contexts beetween which you can switch
 
 How to create sealed secret for flux+slack integration (webhook)
 1) Create secret and export it to yaml file
-kubectl create secret -n flux-system generic slack-url --from-literal=address=https://hooks.slack.com/services/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 --dry-run=client -o yaml > flux_slack.yaml
+kubectl create secret -n flux-system generic slack-url --from-literal=address=https://hooks.slack.com/services/${slack_webhook} --dry-run=client -o yaml > flux_slack.yaml
 
 2) Create sealed secret
 kubeseal <flux_slack.yaml >sealed_flux_slack.yaml --format=yaml --controller-name=sealed-secrets
