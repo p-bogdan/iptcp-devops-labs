@@ -56,4 +56,15 @@ resource "flux_bootstrap_git" "dev" {
   network_policy = "false"
 }
 
-  
+
+resource "helm_release" "kubeseal" {
+  depends_on = [module.gke_dev, module.compute_network, flux_bootstrap_git.dev]
+  name       = "sealed-secrets"
+  namespace  = "kube-system"
+
+  repository = "https://bitnami-labs.github.io/sealed-secrets"
+  chart      = "sealed-secrets"
+  wait = true
+  wait_for_jobs = true
+  create_namespace = true
+}
