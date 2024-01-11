@@ -1,0 +1,16 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  creationTimestamp: null
+  name: books-db-service.default.svc.cluster.local
+  namespace: default
+spec:
+  routes:
+  - condition:
+      method: GET
+      pathRegex: /authors
+    name: GET /authors
+  - condition:
+      method: GET
+      pathRegex: /books
+    name: GET /books

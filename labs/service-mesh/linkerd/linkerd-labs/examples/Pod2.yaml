@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: books-pod
+  labels:
+    app: books-api
+spec:
+  containers:
+    - image: books-api
+      name: books-api-container

@@ -1,0 +1,34 @@
+{
+    "Traffic": {
+        "Frequency": 1000,
+        "TargetPool": [
+            {
+                "Url": "http://localhost:8080/frontend"
+            }
+        ]
+    },
+    "Passthrough": {
+        "Port": "8080",
+        "Endpoints": [
+            {
+                "Path": "/frontend",
+                "Target": {
+                    "Url": "http://localhost:8081/backend"
+                },
+                "Latency": 0,
+                "FaultPercentage": 20
+            }
+        ]
+    },
+    "Responses": {
+        "Port": "8081",
+        "Endpoints": [
+            {
+                "Path": "/backend",
+                "Latency": 100,
+                "FaultPercentage": 10,
+                "Contents": "Sample Backend Response"
+            }
+        ]
+    }
+}

@@ -1,0 +1,13 @@
+apiVersion: split.smi-spec.io/v1alpha1
+kind: TrafficSplit
+metadata:
+  name: blue-green-example
+  namespace: default
+spec:
+  service: application-service
+  # First step has blue configured to take 100% traffic
+  backends:
+  - service: blue-service 
+    weight: 100
+  - service: green-service
+    weight: 0

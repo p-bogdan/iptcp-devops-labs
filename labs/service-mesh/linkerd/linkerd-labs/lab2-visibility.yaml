@@ -1,0 +1,293 @@
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: library-service
+    lab: observability
+  name: library-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: library-service
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend-books-db
+    lab: observability
+  name: books-db-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: books-db
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend-library-db
+    lab: observability
+  name: library-db-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: library-db
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-webapp
+  labels:
+    app: library-webapp
+    lab: observability
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: library-webapp
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: library-webapp
+      labels:
+        app: library-webapp
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Traffic
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Traffic": {
+                        "Frequency": 250,
+                        "TargetPool": [
+                            {
+                              "Url": "http://library-service.default/books"
+                            },
+                            {
+                              "Url": "http://library-service.default/authors"
+                            },
+                            {
+                              "Url": "http://library-service.default/clients"
+                            },
+                            {
+                              "Url": "http://library-service.default/checkouts"
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-service
+  labels:
+    app: library-service
+    lab: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: library-service
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: library-service
+      labels:
+        app: library-service
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/books",
+                                "Targets": [
+                                    {
+                                        "Url": "http://books-db-service.default/books"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 0
+                            },
+                            {
+                                "Path": "/authors",
+                                "Targets": [
+                                    {
+                                        "Url": "http://books-db-service.default/authors"
+                                    }
+                                   ],
+                                "Latency": 25,
+                                "FaultPercentage": 0
+                            },
+                            {
+                                "Path": "/clients",
+                                "Targets": [
+                                    {
+                                        "Url": "http://library-db-service.default/clients"
+                                    }
+                                   ],
+                                "Latency": 280,
+                                "FaultPercentage": 0
+                            },
+                            {
+                                "Path": "/checkouts",
+                                "Targets": [
+                                    {
+                                        "Url": "http://library-db-service.default/checkouts"
+                                    }
+                                   ],
+                                "Latency": 65,
+                                "FaultPercentage": 0
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: books-db
+  labels:
+    app: books-db
+    lab: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: books-db
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: books-db
+      labels:
+        app: books-db
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Backend
+            - name: LINK_CONFIG
+              value: |-
+                 {
+                     "Responses": {
+                         "Port": "8081",
+                         "Endpoints": [
+                             {
+                                 "Path": "/books",
+                                 "Latency": 10,
+                                 "FaultPercentage": 50,
+                                 "Contents": "Sample Backend Response books-db"
+                             },
+                             {
+                                 "Path": "/authors",
+                                 "Latency": 10,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response books-db"
+                             }
+                         ]
+                     }
+                 }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-db
+  labels:
+    app: library-db
+    lab: observability
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: library-db
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: library-db
+      labels:
+        app: library-db
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Backend
+            - name: LINK_CONFIG
+              value: |-
+                 {
+                     "Responses": {
+                         "Port": "8081",
+                         "Endpoints": [
+                             {
+                                 "Path": "/clients",
+                                 "Latency": 10,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response library-db"
+                             },
+                             {
+                                 "Path": "/checkouts",
+                                 "Latency": 10,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response library-db"
+                             }
+                         ]
+                     }
+                 }
+---
+# Source: basic/templates/Combiner.yaml
+# This file contains the looping logic to generate the 
+# Deployments, Services, ServiceProfiles, and TrafficSplits 
+# that form the scalable application.

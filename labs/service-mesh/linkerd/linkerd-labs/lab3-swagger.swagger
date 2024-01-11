@@ -1,0 +1,45 @@
+swagger: "2.0"
+info:
+  description: "This is part of a lab to create serviceprofiles from swagger documents"
+  version: "1.0.0"
+  title: "Swagger Library app"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "student@email.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "customer-db-service.default"
+schemes:
+- "https"
+- "http"
+paths:
+  /customers:
+    get:
+      summary: "Get customer list"
+      description: "list of customers"
+      operationId: "listCustomers"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "400":
+          description: "Invalid input"
+        "500":
+          description: "Internal Error"
+  /orders:
+    get:
+      summary: "Get order list"
+      description: "list of orders"
+      operationId: "listOrders"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      responses:
+        "400":
+          description: "Invalid input"
+        "500":
+          description: "Internal Error"
+

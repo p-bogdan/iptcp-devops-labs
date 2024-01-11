@@ -1,0 +1,350 @@
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: petstore-service
+    lab: service-profiles
+  name: petstore-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: petstore-service
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend-pets-db
+    lab: service-profiles
+  name: pets-db-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: pets-db
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend-inventory-db
+    lab: service-profiles
+  name: inventory-db-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: inventory-db
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend-customer-db
+    lab: service-profiles
+  name: customer-db-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: customer-db
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pets-webapp
+  labels:
+    app: pets-webapp
+    lab: service-profiles
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pets-webapp
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: pets-webapp
+      labels:
+        app: pets-webapp
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Traffic
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Traffic": {
+                        "Frequency": 250,
+                        "TargetPool": [
+                            {
+                              "Url": "http://petstore-service.default/pets"
+                            },
+                            {
+                              "Url": "http://petstore-service.default/inventory"
+                            },
+                            {
+                              "Url": "http://petstore-service.default/customers"
+                            },
+                            {
+                              "Url": "http://petstore-service.default/orders"
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petstore-service
+  labels:
+    app: petstore-service
+    lab: service-profiles
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petstore-service
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: petstore-service
+      labels:
+        app: petstore-service
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/pets",
+                                "Targets": [
+                                    {
+                                        "Url": "http://pets-db-service.default/pets"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 0
+                            },
+                            {
+                                "Path": "/inventory",
+                                "Targets": [
+                                    {
+                                        "Url": "http://inventory-db-service.default/inventory"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 0
+                            },
+                            {
+                                "Path": "/customers",
+                                "Targets": [
+                                    {
+                                        "Url": "http://customer-db-service.default/customers"
+                                    }
+                                   ],
+                                "Latency": 280,
+                                "FaultPercentage": 0
+                            },
+                            {
+                                "Path": "/orders",
+                                "Targets": [
+                                    {
+                                        "Url": "http://customer-db-service.default/orders"
+                                    }
+                                   ],
+                                "Latency": 65,
+                                "FaultPercentage": 0
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pets-db
+  labels:
+    app: pets-db
+    lab: service-profiles
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pets-db
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: pets-db
+      labels:
+        app: pets-db
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Backend
+            - name: LINK_CONFIG
+              value: |-
+                 {
+                     "Responses": {
+                         "Port": "8081",
+                         "Endpoints": [
+                             {
+                                 "Path": "/pets",
+                                 "Latency": 10,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response pets-db"
+                             }
+                         ]
+                     }
+                 }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory-db
+  labels:
+    app: inventory-db
+    lab: service-profiles
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: inventory-db
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: inventory-db
+      labels:
+        app: inventory-db
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Backend
+            - name: LINK_CONFIG
+              value: |-
+                 {
+                     "Responses": {
+                         "Port": "8081",
+                         "Endpoints": [
+                             {
+                                 "Path": "/inventory",
+                                 "Latency": 100,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response inventory-db"
+                             }
+                         ]
+                     }
+                 }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-db
+  labels:
+    app: customer-db
+    lab: service-profiles
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: customer-db
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: customer-db
+      labels:
+        app: customer-db
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Backend
+            - name: LINK_CONFIG
+              value: |-
+                 {
+                     "Responses": {
+                         "Port": "8081",
+                         "Endpoints": [
+                             {
+                                 "Path": "/customers",
+                                 "Latency": 50,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response customer-db"
+                             },
+                             {
+                                 "Path": "/orders",
+                                 "Latency": 125,
+                                 "FaultPercentage": 50,
+                                 "Contents": "Sample Backend Response customer-db"
+                             }
+                         ]
+                     }
+                 }
+---
+# Source: basic/templates/Combiner.yaml
+# This file contains the looping logic to generate the 
+# Deployments, Services, ServiceProfiles, and TrafficSplits 
+# that form the scalable application.

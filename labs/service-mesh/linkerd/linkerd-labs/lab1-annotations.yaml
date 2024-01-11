@@ -1,0 +1,170 @@
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: passthrough
+    lab: mesh
+  name: passthrough-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: passthrough
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend-backend
+    lab: mesh
+  name: backend-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: backend
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: origin
+  labels:
+    app: origin
+    lab: mesh
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: origin
+  template:
+    metadata:
+      name: origin
+      labels:
+        app: origin
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Traffic
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Traffic": {
+                        "Frequency": 500,
+                        "TargetPool": [
+                            {
+                              "Url": "http://passthrough-service.default/frontend"
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: passthrough
+  labels:
+    app: passthrough
+    lab: mesh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: passthrough
+  template:
+    metadata:
+      name: passthrough
+      labels:
+        app: passthrough
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/frontend",
+                                "Targets": [
+                                    {
+                                        "Url": "http://backend-service.default/backend"
+                                    }
+                                   ],
+                                "Latency": 100,
+                                "FaultPercentage": 0
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+    lab: mesh
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      name: backend
+      labels:
+        app: backend
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Backend
+            - name: LINK_CONFIG
+              value: |-
+                 {
+                     "Responses": {
+                         "Port": "8081",
+                         "Endpoints": [
+                             {
+                                 "Path": "/backend",
+                                 "Latency": 100,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response backend"
+                             }
+                         ]
+                     }
+                 }
+---
+# Source: basic/templates/Combiner.yaml
+# This file contains the looping logic to generate the 
+# Deployments, Services, ServiceProfiles, and TrafficSplits 
+# that form the scalable application.

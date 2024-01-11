@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: annotated-pod
+  annotations:
+    example-annotation: true
+spec:
+  containers:
+    - image: practicalcloud/haystack
+      name: haystack-container
+      imagePullPolicy: IfNotPresent

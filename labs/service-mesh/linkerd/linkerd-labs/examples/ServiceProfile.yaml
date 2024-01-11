@@ -1,0 +1,11 @@
+apiVersion: linkerd.io/v1alpha2
+kind: ServiceProfile
+metadata:
+  name: webapp.booksapp.svc.cluster.local
+  namespace: booksapp
+spec:
+  routes:
+  - condition:
+      method: GET
+      pathRegex: /
+    name: GET /

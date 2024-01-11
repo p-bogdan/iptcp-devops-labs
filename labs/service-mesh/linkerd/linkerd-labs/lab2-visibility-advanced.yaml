@@ -1,0 +1,631 @@
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: b1
+    lab: fish
+  name: b1-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: b1
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: c1
+    lab: fish
+  name: c1-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: c1
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: c2
+    lab: fish
+  name: c2-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: c2
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: d1
+    lab: fish
+  name: d1-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: d1
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: d2
+    lab: fish
+  name: d2-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: d2
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: d3
+    lab: fish
+  name: d3-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: d3
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend-e1-db
+    lab: fish
+  name: e1-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: e1-db
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: backend-e2-db
+    lab: fish
+  name: e2-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: e2-db
+  sessionAffinity: None
+  type: ClusterIP
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: a1
+  labels:
+    app: a1
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: a1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: a1
+      labels:
+        app: a1
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Traffic
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Traffic": {
+                        "Frequency": 250,
+                        "TargetPool": [
+                            {
+                              "Url": "http://b1-service.default/b1"
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: a2
+  labels:
+    app: a2
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: a2
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: a2
+      labels:
+        app: a2
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Traffic
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Traffic": {
+                        "Frequency": 250,
+                        "TargetPool": [
+                            {
+                              "Url": "http://b1-service.default/b1"
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: b1
+  labels:
+    app: b1
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: b1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: b1
+      labels:
+        app: b1
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/b1",
+                                "Targets": [
+                                    {
+                                        "Url": "http://c1-service.default/c1"
+                                    },
+                                    {
+                                        "Url": "http://c2-service.default/c2"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 0
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: c1
+  labels:
+    app: c1
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: c1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: c1
+      labels:
+        app: c1
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/c1",
+                                "Targets": [
+                                    {
+                                        "Url": "http://d1-service.default/d1"
+                                    },
+                                    {
+                                        "Url": "http://d2-service.default/d2"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 0
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: c2
+  labels:
+    app: c2
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: c2
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: c2
+      labels:
+        app: c2
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/c2",
+                                "Targets": [
+                                    {
+                                        "Url": "http://d2-service.default/d2"
+                                    },
+                                    {
+                                        "Url": "http://d3-service.default/d3"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 0
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: d1
+  labels:
+    app: d1
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: d1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: d1
+      labels:
+        app: d1
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/d1",
+                                "Targets": [
+                                    {
+                                        "Url": "http://e1-service.default/e1"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 25
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: d2
+  labels:
+    app: d2
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: d2
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: d2
+      labels:
+        app: d2
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/d2",
+                                "Targets": [
+                                    {
+                                        "Url": "http://e1-service.default/e1"
+                                    },
+                                    {
+                                        "Url": "http://e2-service.default/e2"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 0
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: d3
+  labels:
+    app: d3
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: d3
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: d3
+      labels:
+        app: d3
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Middle
+            - name: LINK_CONFIG
+              value: |-
+                {
+                    "Passthrough": {
+                        "Port": "8080",
+                        "Endpoints": [
+                            {
+                                "Path": "/d3",
+                                "Targets": [
+                                    {
+                                        "Url": "http://e2-service.default/e2"
+                                    }
+                                   ],
+                                "Latency": 30,
+                                "FaultPercentage": 0
+                            }
+                        ]
+                    }
+                }
+---
+# Source: basic/templates/Combiner.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e1-db
+  labels:
+    app: e1-db
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e1-db
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: e1-db
+      labels:
+        app: e1-db
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Backend
+            - name: LINK_CONFIG
+              value: |-
+                 {
+                     "Responses": {
+                         "Port": "8081",
+                         "Endpoints": [
+                             {
+                                 "Path": "/e1",
+                                 "Latency": 10,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response e1-db"
+                             }
+                         ]
+                     }
+                 }
+---
+# Source: basic/templates/Combiner.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: e2-db
+  labels:
+    app: e2-db
+    lab: fish
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: e2-db
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      
+      name: e2-db
+      labels:
+        app: e2-db
+    spec:
+      containers:
+        - image: iptcp/haystack
+          name: haystack
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: PROFILE
+              value: Backend
+            - name: LINK_CONFIG
+              value: |-
+                 {
+                     "Responses": {
+                         "Port": "8081",
+                         "Endpoints": [
+                             {
+                                 "Path": "/e2",
+                                 "Latency": 10,
+                                 "FaultPercentage": 0,
+                                 "Contents": "Sample Backend Response e2-db"
+                             }
+                         ]
+                     }
+                 }
+---
+# Source: basic/templates/Combiner.yaml
+# This file contains the looping logic to generate the 
+# Deployments, Services, ServiceProfiles, and TrafficSplits 
+# that form the scalable application.

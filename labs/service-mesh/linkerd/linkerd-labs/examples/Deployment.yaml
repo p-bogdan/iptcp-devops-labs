@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haystack-deployment
+  labels:
+    app: haystack
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: haystack
+  template:
+    metadata:
+      labels:
+        app: haystack
+    spec:
+      containers:
+        - image: practicalcloud/haystack
+          name: haystack-container
+          imagePullPolicy: IfNotPresent

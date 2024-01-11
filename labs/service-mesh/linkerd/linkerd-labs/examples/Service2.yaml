@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  # This will become the DNS name
+  name: books-api-service
+spec:
+  selector:
+    # Must match the labels in the pod
+    app: books-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

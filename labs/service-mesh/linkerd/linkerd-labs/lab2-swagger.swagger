@@ -1,0 +1,35 @@
+swagger: "2.0"
+info:
+  description: "This is part of a lesson on creating serviceprofiles from swagger documents"
+  version: "1.0.0"
+  title: "Swagger Library app"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "student@email.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "books-db-service.default"
+schemes:
+- "https"
+- "http"
+paths:
+  /authors:
+    get:
+      summary: "Get authors list"
+      description: "list of authors"
+      operationId: "listAuthors"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+  /books:
+    get:
+      summary: "Get books list"
+      description: "list of books"
+      operationId: "listBooks"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+
