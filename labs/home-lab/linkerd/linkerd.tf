@@ -9,6 +9,6 @@ resource "helm_release" "linkerd" {
   wait = true
   wait_for_jobs = true
   create_namespace = true
-  version = 
+  version = "3.1.5" 
   #version = "3.1.5"
 }
