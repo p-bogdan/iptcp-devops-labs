@@ -13,6 +13,8 @@ spec:
     repoURL       : "${repoURL}"
     path          : "${path}"
     targetRevision: "${targetRevision}"
+    directory:
+      recurse: true
   project: default
   syncPolicy:
     automated:
