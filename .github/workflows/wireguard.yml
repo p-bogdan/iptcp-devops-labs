@@ -99,9 +99,13 @@ jobs:
     #  run:
     #    working-directory: ./labs/aws/vpn/wireguard/ansible
     steps:
-      - name: Lint Ansible Playbook
+      #- name: Lint Ansible Playbook
         #uses: ansible/ansible-lint-action@main
-        uses: ansible-community/ansible-lint-action@v6.17.0
+        # needs to be replaced with https://github.com/marketplace/actions/run-ansible-lint
+        #uses: ansible-community/ansible-lint-action@v6.17.0
+      - uses: actions/checkout@v4
+      - name: Run ansible-lint
+        uses: ansible/ansible-lint@main # or version tag instead of 'main'
         with:
           targets: "./labs/aws/vpn/wireguard/ansible"
 
