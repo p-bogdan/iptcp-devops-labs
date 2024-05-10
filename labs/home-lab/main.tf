@@ -1,6 +1,6 @@
 module "argocd" {
 source = "./argocd"
-chart_version = "6.7.18"
+chart_version = "6.8.1"
 }
 
 # Can be deployed ONLY after ArgoCD deployment: depends_on = [module.argocd_dev_root]
