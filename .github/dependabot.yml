@@ -15,6 +15,6 @@ updates:
       timezone: "Europe/Kyiv"
     open-pull-requests-limit: 3
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/labs"
     schedule:
       interval: "weekly"
