@@ -1,5 +1,5 @@
 provider "kubernetes" {
-config_path = "~/.kube/config"
+config_path = "/Users/iptcp/.kube/config"
 }
 
 provider "helm" {
@@ -17,6 +17,10 @@ terraform {
     helm = {
       source  = "hashicorp/helm"
       #version = "~> 2.4.1"
+    }
+    kubectl = {
+      source  = "gavinbunney/kubectl"
+      version = ">= 1.7.0"
     }
   }
 }

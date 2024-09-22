@@ -1,7 +1,7 @@
 #----------------------------------------------------------------
 # Highly Available mode with autoscaling require minimum 3 nodes!
 redis-ha:
-  enabled: true
+  enabled: false
 
 controller:
   replicas: 1
