@@ -18,6 +18,11 @@ repoServer:
 
 applicationSet:
   replicas: 2
+
+ingress:
+  enabled: true
+  ingressClassName: "traefik"
+  hostname: []
 #----------------------------------------------------------------
 # Fixing issue with Stuck Processing for Ingress resource
 server:
