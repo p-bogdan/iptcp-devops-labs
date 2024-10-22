@@ -32,4 +32,20 @@ server:
         health.lua: |
           hs = {}
           hs.status = "Healthy"
-          return hs 
+          return hs
+# adding appproject
+extraObjects:
+  - apiVersion: argoproj.io/v1alpha1
+    kind: AppProject
+    metadata:
+      name: home-lab
+      namespace: argocd
+    spec:
+      clusterResourceWhitelist:
+        - group: '*'
+          kind: '*'
+      destionations:
+        - namespace: '*'
+          server: '*'
+      sourceRepos:
+        - '*'

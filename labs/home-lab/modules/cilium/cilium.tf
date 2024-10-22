@@ -10,6 +10,7 @@ resource "kubectl_manifest" "cilium_bgp_cluster_config" {
   for_each  = data.kubectl_file_documents.bgp_manifests.manifests
   #yaml_body = element(data.kubectl_path_documents.bgp_manifests.documents, count.index)
   yaml_body = each.value
+  server_side_apply = true
 }
 
 resource "helm_release" "cni" {
