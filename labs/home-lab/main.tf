@@ -40,7 +40,7 @@ module "cni" {
 module "argocd" {
 depends_on = [module.cni]
 source = "./argocd"
-chart_version = "7.6.12"
+chart_version = "7.7.4"
 }
 
 # Can be deployed ONLY after ArgoCD deployment: depends_on = [module.argocd_dev_root]
