@@ -34,7 +34,7 @@
 
 module "cni" {
   source = "./modules/cilium"
-  chart_version = "1.16.3"
+  chart_version = "1.16.4"
 }
 
 module "argocd" {
