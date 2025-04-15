@@ -16,6 +16,16 @@ encryption:
 # CiliumBGPPeeringPolicy CRDs.
 bgpControlPlane:
   enabled: true
+
+#ingress controller
+ingressController:
+  enabled: true
+  default: true
+
+#gateway api enabling
+# gatewayAPI:
+#   enabled: true
+
 ipam:
   # -- Configure IP Address Management mode.
   # ref: https://docs.cilium.io/en/stable/network/concepts/ipam/

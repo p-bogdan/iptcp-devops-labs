@@ -21,7 +21,7 @@ applicationSet:
 
 ingress:
   enabled: true
-  ingressClassName: "traefik"
+  ingressClassName: "cilium"
   hostname: []
 #----------------------------------------------------------------
 # Fixing issue with Stuck Processing for Ingress resource

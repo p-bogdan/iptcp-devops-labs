@@ -25,6 +25,11 @@ spec:
       peerAddress: 192.168.0.86
       peerConfigRef:
         name: "cilium-peer"
+    - name: "peer-4"
+      peerASN: 65000
+      peerAddress: 192.168.0.87
+      peerConfigRef:
+        name: "cilium-peer"
 ---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeerConfig
