@@ -13,6 +13,11 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@master
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.4
+          terraform_wrapper: false #Fixing jq output issue
       - name: Terraform fmt
         run: |
           terraform fmt -recursive
