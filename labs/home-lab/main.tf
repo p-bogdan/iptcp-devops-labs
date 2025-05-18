@@ -34,13 +34,19 @@
 
 module "cni" {
   source = "./modules/cilium"
-  chart_version = "1.17.3"
+  chart_version = "1.17.4"
 }
 
 module "argocd" {
 depends_on = [module.cni]
 source = "./argocd"
-chart_version = "7.8.28"
+chart_version = "8.0.4"
+}
+
+module "argocd-rollouts" {
+depends_on = [module.cni, module.argocd]
+source = "./argocd-rollouts"
+chart_version = "2.39.5"
 }
 
 # Can be deployed ONLY after ArgoCD deployment: depends_on = [module.argocd_dev_root]
