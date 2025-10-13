@@ -160,7 +160,7 @@ jobs:
       #     source: "./docker-compose.yml"
       #     target: "/tmp"
       - name: Deploy Wireguard automation
-        uses: dawidd6/action-ansible-playbook@v4
+        uses: dawidd6/action-ansible-playbook@v5
         with:
           playbook: playbook.yml
           directory: ./labs/aws/vpn/wireguard/ansible
