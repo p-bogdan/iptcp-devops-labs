@@ -40,7 +40,7 @@ module "cni" {
 module "argocd" {
 depends_on = [module.cni]
 source = "./argocd"
-chart_version = "8.5.8"
+chart_version = "8.6.0"
 }
 
 # module "argocd-rollouts" {

@@ -10,26 +10,11 @@ spec:
   - name: "bgp-cilium-instance"
     localASN: 65000
     peers:
-    - name: "peer-1"
-      peerASN: 65000
-      peerAddress: 192.168.0.84
+    - name: "mikrotik-router"
+      peerASN: 65001  # ✅ Must match your MikroTik's ASN
+      peerAddress: 192.168.0.1
       peerConfigRef:
-        name: "cilium-peer"
-    - name: "peer-2"
-      peerASN: 65000
-      peerAddress: 192.168.0.85
-      peerConfigRef:
-        name: "cilium-peer"
-    - name: "peer-3"
-      peerASN: 65000
-      peerAddress: 192.168.0.86
-      peerConfigRef:
-        name: "cilium-peer"
-    - name: "peer-4"
-      peerASN: 65000
-      peerAddress: 192.168.0.87
-      peerConfigRef:
-        name: "cilium-peer"
+        name: cilium-peer
 ---
 apiVersion: cilium.io/v2alpha1
 kind: CiliumBGPPeerConfig
@@ -65,22 +50,3 @@ metadata:
 spec:
   advertisements:
     - advertisementType: "PodCIDR"
-      #attributes:
-      #  communities:
-      #    standard: [ "65000:99" ]
-      #  localPreference: 99
-# ---
-# apiVersion: cilium.io/v2alpha1
-# kind: CiliumBGPNodeConfigOverride
-# metadata:
-#   name: bgp-override1
-# spec:
-#   bgpInstances:
-#     - name: "bgp-instance"
-#       routerID: "192.168.0.84"
-#       localPort: 1790 # tried here to change to 179, but after that node disappeared from **BGP Peers** table
-#       peers:
-#         - name: "peer1"
-#           localAddress: 192.168.0.85
-#         - name: "peer2"
-#           localAddress: 192.168.0.86

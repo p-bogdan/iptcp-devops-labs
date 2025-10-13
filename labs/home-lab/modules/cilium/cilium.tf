@@ -2,10 +2,29 @@ data "kubectl_file_documents" "bgp_manifests" {
     content = file("${path.module}/templates/cilium-bgp-cluster-config.yaml")
 }
 
+#Applying labels required to bgp sessions
+resource "kubectl_manifest" "label_node" {
+  for_each = toset([
+    "kubernetes-master",
+    "kubernetes-worker",
+    "kubernetes-worker2",
+    "k8s-worker4"
+  ])
+
+  yaml_body = <<YAML
+apiVersion: v1
+kind: Node
+metadata:
+  name: ${each.value}
+  labels:
+    cni: cilium
+YAML
+}
+
 
 
 resource "kubectl_manifest" "cilium_bgp_cluster_config" {
-  depends_on       = [helm_release.cni]
+  depends_on       = [helm_release.cni, kubectl_manifest.label_node]
   #count     = length(data.kubectl_path_documents.bgp_manifests)
   for_each  = data.kubectl_file_documents.bgp_manifests.manifests
   #yaml_body = element(data.kubectl_path_documents.bgp_manifests.documents, count.index)

@@ -17,10 +17,19 @@ encryption:
 bgpControlPlane:
   enabled: true
 
+# This enabled the mutual authentication feature and automatically deployed a SPIRE server.
+authenticationauthentication:
+  mutual:
+    spire:
+      enabled: true
+      install:
+        enabled: true
 #ingress controller
 ingressController:
   enabled: true
   default: true
+  service:
+    type: NodePort
 
 #gateway api enabling
 # gatewayAPI:
