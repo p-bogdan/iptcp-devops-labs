@@ -1,11 +1,11 @@
 output "argocd_version" {
-  value = helm_release.cni.metadata[0].app_version
+  value = helm_release.cni.metadata.app_version
 }
 
 output "helm_revision" {
-  value = helm_release.cni.metadata[0].revision
+  value = helm_release.cni.metadata.revision
 }
 
 output "chart_version" {
-  value = helm_release.cni.metadata[0].version
+  value = helm_release.cni.metadata.version
 }

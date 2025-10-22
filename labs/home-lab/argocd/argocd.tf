@@ -11,10 +11,12 @@ resource "helm_release" "argocd" {
   wait             = true
   wait_for_jobs    = true
 
-  set {
-    name  = "server.service.type"
-    value = "NodePort"
-  }
+  set = [
+    {
+      name  = "server.service.type"
+      value = "NodePort"
+    }
+  ]
 
   values = [file("${path.module}/argocd.yaml")]
 }
