@@ -34,13 +34,13 @@
 
 module "cni" {
   source = "./modules/cilium"
-  chart_version = "1.18.2"
+  chart_version = "1.18.3"
 }
 
 module "argocd" {
 depends_on = [module.cni]
 source = "./argocd"
-chart_version = "8.6.0"
+chart_version = "9.0.5"
 }
 
 # module "argocd-rollouts" {
