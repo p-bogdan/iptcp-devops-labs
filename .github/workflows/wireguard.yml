@@ -29,7 +29,7 @@ jobs:
 
   wireguard:
     name: Wireguard infra provisioning
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     if: ${{ github.actor == 'dependabot[bot]' || github.actor == 'p-bogdan' }}
     defaults:
       run:
@@ -51,7 +51,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.13.3
+          terraform_version: 1.14.8
           terraform_wrapper: false #Fixing jq output issue
           
       - name: Configure AWS Credentials
@@ -94,7 +94,7 @@ jobs:
   ansible_lint:
     name: Provisioning ansible infra part
     needs: wireguard
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     #defaults:
     #  run:
     #    working-directory: ./labs/aws/vpn/wireguard/ansible
@@ -112,7 +112,7 @@ jobs:
   run_playbook:
     name: Run ansible playbok
     needs: [ansible_lint, wireguard]
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: ./labs/aws/vpn/wireguard/ansible
@@ -178,7 +178,7 @@ jobs:
   
   # deployAnsible:
   #   needs: ansible_lint
-  #   runs-on: ubuntu-22.04
+  #   runs-on: ubuntu-24.04
   #   #permissions:
   #     #packages: write
   #   #  contents: read
