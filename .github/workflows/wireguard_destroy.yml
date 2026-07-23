@@ -4,13 +4,13 @@ on:
   #  branches:
   #    - master
   #    - main
-  pull_request_target:
-    branches:
-      - master
-      - main
-  schedule:
+  #pull_request_target:
+  #  branches:
+  #    - master
+  #    - main
+  #schedule:
     # Runs "at minute 55 past every hour" (see https://crontab.guru)
-    - cron: '0 0 * * *'
+  #  - cron: '0 0 * * *'
   #To be able to run it manually    
   workflow_dispatch:
 
